@@ -7,6 +7,7 @@
 	"bugs": "https://github.com/RangHo/thoughts.rangho.me/issues",
 	"license": "CC-BY-NC-SA-4.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -47,8 +48,8 @@
 		"vite": "^4.4.2",
 		"vitest": "^0.32.2"
 	},
-	"type": "module",
 	"dependencies": {
-		"katex": "^0.16.9"
+		"katex": "^0.16.9",
+		"prismjs": "^1.29.0"
 	}
 }

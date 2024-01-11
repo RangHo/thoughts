@@ -6,4 +6,10 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+</svelte:head>
+
+{data.metadata.title}
+
+
 <svelte:component this={posts.find((post) => post.slug === data.slug)?.component} />

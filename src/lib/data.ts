@@ -2,29 +2,46 @@ import slugify from 'slugify';
 
 import type { SvelteComponent } from 'svelte';
 
-export interface Post {
-  component: typeof SvelteComponent;
-  slug: string;
-  filename: string;
+export interface PostMetadata {
+	title: string;
+	subtitle?: string;
+	author?: string;
+	date: string;
+	language?: string;
 }
 
-export const posts: Post[] = await Promise.all(Object.entries(import.meta.glob('$posts/*.svelte')).map(async ([filepath, loader]) => {
-  const component = await loader().then((module) => {
-    return (module as { default: typeof SvelteComponent }).default;
-  });
-  const filename = filepath
-    .split('/')
-    .pop()!
-    .replace(/\.svelte$/, '')
-    .replace(/_/g, ' ');
-  const slug = slugify(filename, {
-    replacement: '-',
-    lower: true,
-  });
-  
-  return {
-    component,
-    slug,
-    filename
-  };
-}));
+export interface Post {
+	component: typeof SvelteComponent;
+	slug: string;
+	metadata: PostMetadata;
+}
+
+type PostComponent = {
+	default: typeof SvelteComponent;
+	metadata: PostMetadata;
+};
+
+export const posts: Post[] = await Promise.all(
+	Object.entries(import.meta.glob('$posts/*.svelte')).map(async ([filepath, loader]) => {
+		const module = await loader().then((module) => {
+			return module as PostComponent;
+		});
+		const component = module.default;
+		const metadata = module.metadata;
+		const rawname = filepath
+			.split('/')
+			.pop()!
+			.replace(/\.svelte$/, '')
+			.replace(/_/g, ' ');
+		const slug = slugify(rawname, {
+			replacement: '-',
+			lower: true
+		});
+
+		return {
+			component,
+			slug,
+			metadata
+		};
+	})
+);

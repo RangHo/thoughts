@@ -1,6 +1,7 @@
 #+title: 이 멋진 흑마법에 축복을! 1
 #+subtitle: 점심 나가서 먹은 C++ 문제 해설
 #+date: <2022-05-30 Mon>
+#+language: ko
 
 #+begin_note
 **알림!**

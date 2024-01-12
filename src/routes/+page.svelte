@@ -9,7 +9,7 @@
   });
 </script>
 
-<h1>Posts</h1>
+<h1>take a look at my thoughts</h1>
 
 <ul>
   {#each posts as post}

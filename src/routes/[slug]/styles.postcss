@@ -1,0 +1,58 @@
+/**
+ * Style definition for posts.
+ *
+ * Since `org2svelte.el` generates bare HTML, we need to define elemental styles.
+ */
+
+/* --- Headers --- */
+
+#post-content h1, h2, h3, h4, h5, h6 {
+  @apply font-heading font-bold;
+}
+
+#post-content h1 {
+  @apply pt-8 pb-4 text-4xl;
+}
+
+#post-content h2 {
+  @apply pt-6 pb-3 text-3xl;
+}
+
+#post-content h3 {
+  @apply pt-4 pb-2 text-2xl;
+}
+
+#post-content h4 {
+  @apply pt-3 pb-1 text-xl;
+}
+
+#post-content h5 {
+  @apply pt-2 pb-1 text-lg;
+}
+
+#post-content h6 {
+  @apply pt-1 pb-1 text-base;
+}
+
+/* --- Paragraphs --- */
+#post-content p {
+  @apply my-4 indent-4;
+}
+
+/* --- Admonitions --- */
+
+#post-content .note {
+  @apply p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900 dark:border-blue-400;
+}
+
+#post-content .note p {
+  @apply indent-0
+}
+
+#post-content .note p:first-child {
+  @apply mt-0;
+}
+
+#post-content .note p:last-child {
+  @apply mb-0;
+}

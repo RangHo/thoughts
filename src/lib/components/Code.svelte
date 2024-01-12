@@ -2,6 +2,8 @@
   import hljs from 'highlight.js';
   import he from 'he';
 
+  import 'highlight.js/styles/hybrid.css';
+
   export let lang: string;
   export let code: string;
   export let inline = false;
@@ -19,8 +21,8 @@
 </svelte:head>
 
 {#if inline}
-  <code class="language-{lang}">{@html highlighted}</code>
+  <code class="hljs language-{lang}">{@html highlighted}</code>
 {:else}
-  <pre><code class="language-{lang}">{@html highlighted}</code></pre>
+  <pre class="my-4"><code class="hljs language-{lang}">{@html highlighted}</code></pre>
 {/if}
 

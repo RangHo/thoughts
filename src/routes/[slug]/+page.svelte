@@ -3,6 +3,7 @@
   import { ScaleOut } from 'svelte-loading-spinners';
 
   import { getComponent } from '$lib/post';
+  import { colorMode } from '$lib/dark';
 
 	import type { PageData } from './$types';
 
@@ -42,7 +43,9 @@
     >
       {#await target}
         <div class="flex justify-center">
-          <ScaleOut />
+          <ScaleOut
+            color="black"
+          />
         </div>
       {:then target}
         <svelte:component this={target} />
@@ -64,9 +67,8 @@
         reactionsEnabled="1"
         emitMetadata="0"
         inputPosition="top"
-        theme="light"
+        theme={$colorMode}
         lang={data.language}
-        loading="lazy"
       />
     </div>
   </div>

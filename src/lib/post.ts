@@ -52,13 +52,13 @@ export async function all() {
   return posts;
 }
 
-export async function getMetadata(slug: string): Promise<Omit<Post, 'component'>> {
+export async function getMetadata(slug: string): Promise<PostMetadata> {
   const posts = await all();
   
   const post = posts.find((post) => post.slug === slug);
   
   if (post) {
-    return post;
+    return post.metadata;
   } else {
     throw new Error(`Post not found: ${slug}`);
   }

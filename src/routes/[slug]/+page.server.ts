@@ -11,12 +11,12 @@ export const load: PageServerLoad = async ({ params }) => {
     const target = await post.getMetadata(slug);
 
 	  return {
-		  slug: target.slug,
-      title: target.metadata.title,
-      subtitle: target.metadata.subtitle || '',
-      author: target.metadata.author || '',
-      date: target.metadata.date,
-      language: target.metadata.language,
+      slug,
+      title: target.title,
+      subtitle: target.subtitle || '',
+      author: target.author || '',
+      date: target.date,
+      language: target.language,
 	  };
   } catch (err) {
     throw error(404, 'Post not found');

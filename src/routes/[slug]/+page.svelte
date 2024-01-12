@@ -1,5 +1,6 @@
 <script lang="ts">
   import Giscus from '@giscus/svelte';
+  import { ScaleOut } from 'svelte-loading-spinners';
 
   import { getComponent } from '$lib/post';
 
@@ -40,7 +41,9 @@
       class="mx-auto w-full max-w-4xl"
     >
       {#await target}
-        <p>loading...</p>
+        <div class="flex justify-center">
+          <ScaleOut />
+        </div>
       {:then target}
         <svelte:component this={target} />
       {:catch error}
@@ -56,13 +59,14 @@
         repoId="R_kgDOHtWVvw"
         category="Comments"
         categoryId="DIC_kwDOHtWVv84CT8zK"
-        mapping="url"
+        mapping="pathname"
         strict="0"
         reactionsEnabled="1"
         emitMetadata="0"
         inputPosition="top"
         theme="light"
         lang={data.language}
+        loading="lazy"
       />
     </div>
   </div>

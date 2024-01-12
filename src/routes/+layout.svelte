@@ -13,7 +13,7 @@
   });
 </script>
 
-<button on:click={() => (colorMode.update((v) => (v === 'dark' ? 'light' : 'dark')))}>
+<button on:click={() => colorMode.update((v) => (v === 'dark' ? 'light' : 'dark'))}>
   Toggle
 </button>
 

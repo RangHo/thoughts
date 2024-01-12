@@ -11,12 +11,12 @@
   };
 </script>
 
+{#if expression}
+  {@html katex.renderToString(expression, katexOptions)}
+{/if}
+
 <style lang="postcss">
   :global(.katex-display) {
     @apply overflow-x-auto overflow-y-hidden;
   }
 </style>
-
-{#if expression}
-  {@html katex.renderToString(expression, katexOptions)}
-{/if}

@@ -14,7 +14,6 @@ export function init() {
   prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)');
   prefersColorScheme.addEventListener('change', (e) => {
     colorMode.set(e.matches ? 'dark' : 'light');
-    
   });
 }
 

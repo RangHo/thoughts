@@ -3,22 +3,22 @@ import slugify from 'slugify';
 import type { SvelteComponent } from 'svelte';
 
 export interface PostMetadata {
-	title: string;
-	subtitle?: string;
-	author?: string;
-	date: string;
-	language: string;
+  title: string;
+  subtitle?: string;
+  author?: string;
+  date: string;
+  language: string;
 }
 
 export interface Post {
-	component: typeof SvelteComponent;
-	slug: string;
-	metadata: PostMetadata;
+  component: typeof SvelteComponent;
+  slug: string;
+  metadata: PostMetadata;
 }
 
 type PostComponent = {
-	default: typeof SvelteComponent;
-	metadata: PostMetadata;
+  default: typeof SvelteComponent;
+  metadata: PostMetadata;
 };
 
 const imports = import.meta.glob('$posts/*.svelte');
@@ -40,12 +40,12 @@ export async function all() {
       .replace(/_/g, ' ');
     const slug = slugify(rawname, {
       replacement: '-',
-      lower: true
+      lower: true,
     });
     posts.push({
       component,
       slug,
-      metadata
+      metadata,
     });
   }
 
@@ -54,9 +54,9 @@ export async function all() {
 
 export async function getMetadata(slug: string): Promise<PostMetadata> {
   const posts = await all();
-  
+
   const post = posts.find((post) => post.slug === slug);
-  
+
   if (post) {
     return post.metadata;
   } else {

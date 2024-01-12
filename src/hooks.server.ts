@@ -11,10 +11,10 @@ export const handle: Handle = async ({ event, resolve }) => {
   } else {
     language = (await getMetadata(slug)).language;
   }
-  
+
   return await resolve(event, {
     transformPageChunk({ html }) {
       return html.replace('%lang%', language);
-    }
+    },
   });
 };

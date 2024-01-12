@@ -25,4 +25,3 @@
 {:else}
   <pre class="my-4"><code class="hljs language-{lang}">{@html highlighted}</code></pre>
 {/if}
-

@@ -14,6 +14,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Emacs
+        uses: purcell/setup-emacs@v6
+        with:
+          version: 29.1
+
+      - name: Convert all posts
+        run: |
+          emacs --script scripts/org2svelte.el src/posts/*.org
+
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
         with:

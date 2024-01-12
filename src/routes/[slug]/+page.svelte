@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import Giscus from '@giscus/svelte';
 
   import { getComponent } from '$lib/post';
 
@@ -22,7 +22,7 @@
       {data.title}
     </h1>
     <p
-      class="text-gray-500 dark:text-gray-400 font-heading font-semibold"
+      class="text-xl text-gray-500 dark:text-gray-400 font-heading font-semibold"
     >
       {data.subtitle}
     </p>
@@ -34,18 +34,36 @@
 >
   
   <div
-    class="flex justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen"
+    class="flex flex-col justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen"
   >
     <article
-      class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert"
-      >
-  {#await target}
-    <p>loading...</p>
-  {:then target}
-    <svelte:component this={target} />
-  {:catch error}
-    <p>error: {error.message}</p>
-  {/await}
+      class="mx-auto w-full max-w-4xl"
+    >
+      {#await target}
+        <p>loading...</p>
+      {:then target}
+        <svelte:component this={target} />
+      {:catch error}
+        <p>error: {error.message}</p>
+      {/await}
     </article>
+
+    <div
+      class="mx-auto w-full max-w-4xl"
+    >
+      <Giscus
+        repo="RangHo/thoughts.rangho.me"
+        repoId="R_kgDOHtWVvw"
+        category="Comments"
+        categoryId="DIC_kwDOHtWVv84CT8zK"
+        mapping="url"
+        strict="0"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        inputPosition="top"
+        theme="light"
+        lang={data.language}
+      />
+    </div>
   </div>
 </main>

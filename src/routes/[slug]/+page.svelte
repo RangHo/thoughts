@@ -1,15 +1,29 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
+  import { getComponent } from '$lib/post';
+
 	import type { PageData } from './$types';
 
-	import { posts } from '$lib/data';
+  import 'katex/dist/katex.min.css';
 
 	export let data: PageData;
+
+  let target = getComponent(data.slug);
 </script>
 
-<svelte:head>
-</svelte:head>
+<style lang="postcss">
+  h1 {
+    @apply text-4xl font-bold;
+  }
+</style>
 
-{data.metadata.title}
+<h1>{data.title}</h1>
 
-
-<svelte:component this={posts.find((post) => post.slug === data.slug)?.component} />
+{#await target}
+  <p>loading...</p>
+{:then target}
+  <svelte:component this={target} />
+{:catch error}
+  <p>error: {error.message}</p>
+{/await}

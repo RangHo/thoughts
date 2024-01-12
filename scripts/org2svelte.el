@@ -26,7 +26,8 @@
       org-html-head-include-default-style nil
       org-html-doctype "html5"
       org-html-html5-fancy t
-      org-html-htmlize-output-type nil)
+      org-html-htmlize-output-type nil
+      org-html-link-org-files-as-html nil)
 
 ;; Replace parantheses/braces/brackets with HTML entities
 (setq org-html-protect-char-alist
@@ -36,26 +37,37 @@
         ("{" . "&lbrace;")
         ("}" . "&rbrace;")))
 
+(defconst org2svelte--component-module-script
+  "
+import Math from '$lib/components/Math.svelte';
+import Code from '$lib/components/Code.svelte';
+export const metadata = %s;"
+  "Template for the component module script.")
+
 (defvar org2svelte--current-file-metadata nil
   "Metadata of the current file being exported.")
 
-(defun org2svelte--verbatim-html-advice (orig-fun &rest args)
-  "Advice to wrap the output of ORIG-FUN with ARGS into Svelte verbatim HTML block."
+;; Replace LaTeX environments with Svelte Math components
+(define-advice org-html-latex-environment
+    (:around (orig-fun &rest args))
   (let ((orig-res (apply orig-fun args)))
-    (format "{@html `%s`}" (string-replace "\\" "\\\\" orig-res))))
+    (format "<Math expression={`%s`} display />" (string-replace "\\" "\\\\" orig-res))))
 
-;; Wrap LaTeX sources in Svelte verbatim HTML block to avoid parsing errors
-(advice-add 'org-html-latex-environment
-            :around #'org2svelte--verbatim-html-advice)
-(advice-add 'org-html-latex-fragment
-            :around #'org2svelte--verbatim-html-advice)
+;; Replace LaTeX fragments with Svelte Math components
+(define-advice org-html-latex-fragment
+    (:around (orig-fun &rest args))
+  (let ((orig-res (apply orig-fun args)))
+    (format "<Math expression={`%s`} />"
+            (replace-regexp-in-string (rx (or "\\\\(" "\\\\)"))
+                                      ""
+                                      (string-replace "\\" "\\\\" orig-res)))))
 
 ;; Generate semantic code blocks
 (define-advice org-html-src-block
     (:override (src-block _contents info))
   (let ((lang (org-element-property :language src-block))
         (code (org-html-format-code src-block info)))
-    (format "{@html `<pre><code class=\"language-%s\">%s</code></pre>`}" lang code)))
+    (format "<Code lang=\"%s\" code={`%s`} />" lang code)))
 
 (dolist (file command-line-args-left)
   (princ (format "Converting %s to a Svelte component..." file))
@@ -77,10 +89,10 @@
       (if (re-search-forward "<script.*context=\"module\".*>" nil t)
           (progn
             (forward-line)
-            (insert (format "export const metadata = %s;\n"
-                            metadata-json)))
-        (insert (format "<script context=\"module\">\nexport const metadata = %s;\n</script>\n"
-                        metadata-json))))
+            (insert (format org2svelte--component-module-script metadata-json)))
+        (insert (concat "<script context=\"module\">\n"
+                        (format org2svelte--component-module-script metadata-json)
+                        "\n</script>\n"))))
     (write-file (concat (file-name-sans-extension file) ".svelte")))
   (princ " done.\n"))
 

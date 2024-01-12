@@ -2,19 +2,27 @@ import type { PageServerLoad } from './$types';
 
 import { error } from '@sveltejs/kit';
 
-import { posts } from '$lib/data';
+import * as post from '$lib/post';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const { slug } = params;
 
-	const post = posts.find((post) => post.slug === slug);
+  try {
+    const target = await post.getMetadata(slug);
 
-	if (!post) {
-		throw error(404, 'Post not found');
-	}
+	  return {
+		  slug: target.slug,
+      title: target.metadata.title,
+      subtitle: target.metadata.subtitle || '',
+      author: target.metadata.author || '',
+      date: target.metadata.date,
+      language: target.metadata.language,
+	  };
+  } catch (err) {
+    throw error(404, 'Post not found');
+  }
+};
 
-	return {
-		slug: post.slug,
-		metadata: post.metadata
-	};
+export const entries = async () => {
+  return post.all();
 };

@@ -79,6 +79,32 @@ export const metadata = %s;"
         (code (org-html-format-code src-block info)))
     (format "<Code lang=\"%s\" code={`%s`} />" lang code)))
 
+;; Load images as modules
+(defvar org2svelte--image-id-alist nil
+  "Alist of image IDs and their corresponding file paths.")
+
+(defun org2svelte--generate-image-imports ()
+  "Generate import statements for images."
+  (let ((imports ""))
+    (dolist (image-id-path org2svelte--image-id-alist)
+      (let ((image-id (car image-id-path))
+            (image-path (cdr image-id-path)))
+        (setq imports (concat imports
+                              (format "import %s from '%s';\n"
+                                      image-id
+                                      image-path)))))
+    imports))
+
+(define-advice org-html--format-image
+    (:around (orig-fun source attributes info))
+  (let* ((orig-res (apply orig-fun `(,source ,attributes ,info)))
+         (image-id (org-html--reference source info))
+         (image-path source))
+    (add-to-list 'org2svelte--image-id-alist (cons image-id image-path))
+    (string-replace (format "src=\"%s\"" source)
+                    (format "src={%s}" image-id)
+                    orig-res)))
+
 (dolist (file command-line-args-left)
   (princ (format "Converting %s to a Svelte component..." file))
   (with-temp-buffer
@@ -95,13 +121,16 @@ export const metadata = %s;"
                                          (cons (downcase (car element))
                                                (car (cdr element))))
                                        org2svelte--current-file-metadata))
-           (metadata-json (json-encode metadata-sanitized)))
+           (metadata-json (json-encode metadata-sanitized))
+           (component-module-script (concat (org2svelte--generate-image-imports)
+                                            (format org2svelte--component-module-script
+                                                    metadata-json))))
       (if (re-search-forward "<script.*context=\"module\".*>" nil t)
           (progn
             (forward-line)
-            (insert (format org2svelte--component-module-script metadata-json)))
+            (insert component-module-script))
         (insert (concat "<script context=\"module\">\n"
-                        (format org2svelte--component-module-script metadata-json)
+                        component-module-script
                         "\n</script>\n"))))
     (write-file (concat (file-name-sans-extension file) ".svelte")))
   (princ " done.\n"))

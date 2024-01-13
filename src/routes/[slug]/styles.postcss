@@ -4,78 +4,84 @@
  * Since `org2svelte.el` generates bare HTML, we need to define elemental styles.
  */
 
+/* --- Images --- */
+
+.prose figure {
+  @apply flex flex-col items-center justify-center;
+}
+
 /* --- Blockquotes --- */
 
-.prose > blockquote {
+.prose blockquote {
   @apply p-4 border-l-4 border-gray-300 bg-gray-50 dark:bg-gray-900 dark:border-gray-400;
 }
 
-.prose > blockquote p {
+.prose blockquote p {
   @apply indent-0;
 }
 
 /* --- Admonitions --- */
 
-.prose > .note {
+.prose .note {
   @apply p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900 dark:border-blue-400;
 }
 
-.prose > .note p {
+.prose .note p {
   @apply indent-0;
 }
 
-.prose > .note p:first-child {
+.prose .note p:first-child {
   @apply mt-0;
 }
 
-.prose > .note p:last-child {
+.prose .note p:last-child {
   @apply mb-0;
 }
 
-.prose > .tip {
+.prose .tip {
   @apply p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-900 dark:border-green-400;
 }
 
-.prose > .tip p {
+.prose .tip p {
   @apply indent-0;
 }
 
-.prose > .tip p:first-child {
+.prose .tip p:first-child {
   @apply mt-0;
 }
 
-.prose > .tip p:last-child {
+.prose .tip p:last-child {
   @apply mb-0;
 }
 
-.prose > .important {
+.prose .important {
   @apply p-4 border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900 dark:border-yellow-400;
 }
 
-.prose > .important p {
+.prose .important p {
   @apply indent-0;
 }
 
-.prose > .important p:first-child {
+.prose .important p:first-child {
   @apply mt-0;
 }
 
-.prose > .important p:last-child {
+.prose .important p:last-child {
   @apply mb-0;
 }
 
-.prose > .caution {
+.prose .caution {
   @apply p-4 border-l-4 border-red-500 bg-red-50 dark:bg-red-900 dark:border-red-400;
 }
 
-.prose > .caution p {
+.prose .caution p {
   @apply indent-0;
 }
 
-.prose > .caution p:first-child {
+.prose .caution p:first-child {
   @apply mt-0;
 }
 
-.prose > .caution p:last-child {
+.prose .caution p:last-child {
   @apply mb-0;
 }

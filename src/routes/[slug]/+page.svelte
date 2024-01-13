@@ -14,21 +14,23 @@
   let target = getComponent(data.slug);
 </script>
 
-<header>
+<header
+  class="pt-8 font-content antialiased"
+>
   <hgroup
-    class="pt-2 pb-4 mx-auto max-w-4xl bg-white dark:bg-gray-900 border-b-2 border-gray-200 dark:border-gray-700 text-center sm:text-left"
+    class="pt-2 pb-4 mx-auto max-w-4xl border-b-2 border-gray-200 dark:border-gray-700 text-center sm:text-left"
   >
-    <h1 class="pb-2 text-3xl lg:text-4xl text-gray-900 dark:text-white font-heading font-bold">
+    <h1 class="pb-2 text-3xl lg:text-4xl font-heading font-bold">
       {data.title}
     </h1>
-    <p class="text-xl text-gray-500 dark:text-gray-400 font-heading font-semibold">
+    <p class="text-xl font-heading font-semibold">
       {data.subtitle}
     </p>
   </hgroup>
 </header>
 <main
   id="post-content"
-  class="pt-8 pb-16 lg:pt-12 lg:pb-24 bg-white dark:bg-gray-900 font-content text-gray-900 dark:text-white antialiased"
+  class="pt-8 pb-16 lg:pt-12 lg:pb-24"
 >
   <div class="flex flex-col justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen">
     <article class="mx-auto w-full max-w-4xl">

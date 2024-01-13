@@ -1,8 +1,15 @@
 <script lang="ts">
   import hljs from 'highlight.js';
   import he from 'he';
+  import lightTheme from 'highlight.js/styles/tokyo-night-light.css?inline';
+  import darkTheme from 'highlight.js/styles/tokyo-night-dark.css?inline';
 
-  import 'highlight.js/styles/hybrid.css';
+  import { colorMode } from '$lib/dark';
+
+  const hljsThemes = {
+    light: lightTheme,
+    dark: darkTheme,
+  };
 
   export let lang: string;
   export let code: string;
@@ -13,12 +20,7 @@
   $: highlighted = hljs.highlight(he.decode(code), { language: lang }).value;
 </script>
 
-<svelte:head>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/default.min.css"
-  />
-</svelte:head>
+{@html `<style>${hljsThemes[$colorMode]}</style>`}
 
 {#if inline}
   <code class="hljs language-{lang}">{@html highlighted}</code>

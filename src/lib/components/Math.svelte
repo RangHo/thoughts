@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
 

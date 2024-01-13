@@ -17,4 +17,6 @@
   Toggle
 </button>
 
-<slot />
+<div class="transition font-content bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
+  <slot />
+</div>

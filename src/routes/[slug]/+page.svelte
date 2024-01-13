@@ -18,14 +18,19 @@
   class="pt-8 font-content antialiased"
 >
   <hgroup
-    class="pt-2 pb-4 mx-auto max-w-4xl border-b-2 border-gray-200 dark:border-gray-700 text-center sm:text-left"
+    class="pt-2 pb-4 mx-auto max-w-4xl border-b-2 border-gray-200 dark:border-gray-700 text-center"
   >
     <h1 class="pb-2 text-3xl lg:text-4xl font-heading font-bold">
       {data.title}
     </h1>
-    <p class="text-xl font-heading font-semibold">
-      {data.subtitle}
-    </p>
+    <div class="flex flex-col justify-center">
+      <p class="text-xl font-heading font-semibold text-gray-400 dark:text-gray-500">
+        {data.subtitle}
+      </p>
+      <p class="mt-2 text-sm font-heading font-semibold text-gray-400 dark:text-gray-500">
+        {data.date}
+      </p>
+    </div>
   </hgroup>
 </header>
 <main

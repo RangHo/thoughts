@@ -10,5 +10,7 @@ export default {
       monospace: ['"DM Mono"', 'monospace'],
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };

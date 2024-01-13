@@ -4,60 +4,78 @@
  * Since `org2svelte.el` generates bare HTML, we need to define elemental styles.
  */
 
-/* --- Headers --- */
+/* --- Blockquotes --- */
 
-#post-content h1,
-#post-content h2,
-#post-content h3,
-#post-content h4,
-#post-content h5,
-#post-content h6 {
-  @apply font-heading;
+.prose > blockquote {
+  @apply p-4 border-l-4 border-gray-300 bg-gray-50 dark:bg-gray-900 dark:border-gray-400;
 }
 
-#post-content h1 {
-  @apply pt-8 pb-4 text-4xl;
-}
-
-#post-content h2 {
-  @apply pt-6 pb-3 text-3xl;
-}
-
-#post-content h3 {
-  @apply pt-4 pb-2 text-2xl;
-}
-
-#post-content h4 {
-  @apply pt-3 pb-1 text-xl;
-}
-
-#post-content h5 {
-  @apply pt-2 pb-1 text-lg;
-}
-
-#post-content h6 {
-  @apply pt-1 pb-1 text-base;
-}
-
-/* --- Paragraphs --- */
-#post-content p {
-  @apply my-4 indent-4;
+.prose > blockquote p {
+  @apply indent-0;
 }
 
 /* --- Admonitions --- */
 
-#post-content .note {
+.prose > .note {
   @apply p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900 dark:border-blue-400;
 }
 
-#post-content .note p {
+.prose > .note p {
   @apply indent-0;
 }
 
-#post-content .note p:first-child {
+.prose > .note p:first-child {
   @apply mt-0;
 }
 
-#post-content .note p:last-child {
+.prose > .note p:last-child {
+  @apply mb-0;
+}
+
+.prose > .tip {
+  @apply p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-900 dark:border-green-400;
+}
+
+.prose > .tip p {
+  @apply indent-0;
+}
+
+.prose > .tip p:first-child {
+  @apply mt-0;
+}
+
+.prose > .tip p:last-child {
+  @apply mb-0;
+}
+
+.prose > .important {
+  @apply p-4 border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900 dark:border-yellow-400;
+}
+
+.prose > .important p {
+  @apply indent-0;
+}
+
+.prose > .important p:first-child {
+  @apply mt-0;
+}
+
+.prose > .important p:last-child {
+  @apply mb-0;
+}
+
+.prose > .caution {
+  @apply p-4 border-l-4 border-red-500 bg-red-50 dark:bg-red-900 dark:border-red-400;
+}
+
+.prose > .caution p {
+  @apply indent-0;
+}
+
+.prose > .caution p:first-child {
+  @apply mt-0;
+}
+
+.prose > .caution p:last-child {
   @apply mb-0;
 }

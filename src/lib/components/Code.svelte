@@ -25,5 +25,5 @@
 {#if inline}
   <code class="hljs language-{lang} font-monospace">{@html highlighted}</code>
 {:else}
-  <pre class="my-4"><code class="hljs language-{lang} font-monospace">{@html highlighted}</code></pre>
+  <pre class="my-4 not-prose"><code class="hljs language-{lang} font-monospace">{@html highlighted}</code></pre>
 {/if}

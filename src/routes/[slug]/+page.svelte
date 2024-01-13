@@ -34,11 +34,10 @@
   </hgroup>
 </header>
 <main
-  id="post-content"
   class="pt-8 pb-16 lg:pt-12 lg:pb-24"
 >
   <div class="flex flex-col justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen">
-    <article class="mx-auto w-full max-w-4xl">
+    <article class="mx-auto w-full max-w-4xl prose dark:prose-invert">
       {#await target}
         <div class="flex justify-center">
           <ScaleOut color="black" />

@@ -29,6 +29,16 @@
       org-html-htmlize-output-type nil
       org-html-link-org-files-as-html nil)
 
+;; Enable smart quotes
+(setq org-export-with-smart-quotes t)
+(add-to-list 'org-export-smart-quotes-alist
+             '(("ko"
+                (primary-opening :utf-8 "“" :html "&ldquo;")
+                (primary-closing :utf-8 "”" :html "&rdquo;")
+                (secondary-opening :utf-8 "‘" :html "&lsquo;")
+                (secondary-closing :utf-8 "’" :html "&rsquo;")
+                (apostrophe :utf-8 "’" :html "&rsquo;"))))
+
 ;; Replace parantheses/braces/brackets with HTML entities
 (setq org-html-protect-char-alist
       `(,@org-html-protect-char-alist

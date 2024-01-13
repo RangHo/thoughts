@@ -7,6 +7,7 @@ export default {
     fontFamily: {
       heading: ['"GyeonggiTitleM"', 'sans-serif'],
       content: ['"GyeonggiBatang"', 'sans-serif'],
+      monospace: ['"DM Mono"', 'monospace'],
     },
   },
   plugins: [],

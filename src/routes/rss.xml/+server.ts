@@ -5,7 +5,7 @@ import * as post from '$lib/post';
 
 export const prerender = true;
 
-export const GET: RequestHandler = async ({}) => {
+export const GET: RequestHandler = async () => {
   const posts = await post.all();
 
   const headers = {

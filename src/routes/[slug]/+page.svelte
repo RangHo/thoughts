@@ -1,9 +1,11 @@
 <script lang="ts">
   import Giscus from '@giscus/svelte';
   import { ScaleOut } from 'svelte-loading-spinners';
+  import { MetaTags } from 'svelte-meta-tags';
 
   import { getComponent } from '$lib/post';
   import { colorMode } from '$lib/dark';
+  import config from '$lib/config';
 
   import type { PageData } from './$types';
 
@@ -13,6 +15,25 @@
 
   let target = getComponent(data.slug);
 </script>
+
+<MetaTags
+  title={data.title}
+  description={data.subtitle}
+  canonical={`${config.url}/${data.slug}`}
+  openGraph={{
+              url: `https://thoughts.rangho.me/${data.slug}`,
+              title: data.title,
+              description: data.subtitle,
+              siteName: config.name,
+            }}
+  twitter={{
+            handle: '@RangHo_777',
+            cardType: 'summary',
+            title: data.title,
+            description: data.subtitle,
+          }}
+/>
+
 
 <header
   class="pt-8 font-content antialiased"
@@ -46,7 +67,7 @@
         <svelte:component this={target} />
       {:catch error}
         <p>error: {error.message}</p>
-      {/await}
+        {/await}
     </article>
 
     <div class="mx-auto w-full max-w-4xl">

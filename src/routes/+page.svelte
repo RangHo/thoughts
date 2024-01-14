@@ -6,16 +6,19 @@
 
 <MetaTags
   title={config.name}
+  description={config.description}
   canonical={config.url}
   openGraph={{
               url: config.url,
               title: config.name,
+              description: config.description,
               siteName: config.name,
             }}
   twitter={{
             handle: '@RangHo_777',
             cardType: 'summary',
             title: config.name,
+            description: config.description,
           }}
 />
 

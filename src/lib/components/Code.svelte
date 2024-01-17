@@ -20,7 +20,8 @@
   $: highlighted = hljs.highlight(he.decode(code), { language: lang }).value;
 </script>
 
-{@html `<style>${hljsThemes[$colorMode]}</style>`}
+<!-- https://github.com/sveltejs/svelte/issues/5292#issuecomment-787743573 -->
+{@html `<${""}style>${hljsThemes[$colorMode]}</${""}style>`}
 
 {#if inline}
   <code class="hljs language-{lang} font-monospace">{@html highlighted}</code>

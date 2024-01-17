@@ -77,7 +77,7 @@ export const metadata = %s;"
     (:override (src-block _contents info))
   (let ((lang (org-element-property :language src-block))
         (code (org-html-format-code src-block info)))
-    (format "<Code lang=\"%s\" code={`%s`} />" lang code)))
+    (format "<Code lang=\"%s\" code={`%s`} />" lang (string-replace "\\" "\\\\" code))))
 
 ;; Load images as modules
 (defvar org2svelte--image-id-alist nil

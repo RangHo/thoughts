@@ -23,8 +23,9 @@
   "devDependencies": {
     "@giscus/svelte": "^2.4.0",
     "@playwright/test": "^1.28.1",
-    "@sveltejs/adapter-static": "^2.0.3",
-    "@sveltejs/kit": "^1.27.4",
+    "@sveltejs/adapter-static": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/typography": "^0.5.10",
     "@types/he": "^1.2.3",
     "@types/katex": "^0.16.7",
@@ -51,8 +52,8 @@
     "uniorg": "^1.1.1",
     "uniorg-parse": "^2.1.1",
     "uniorg-rehype": "^1.1.1",
-    "vite": "^4.4.2",
-    "vitest": "^0.32.2"
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
   },
   "dependencies": {
     "he": "^1.2.0",

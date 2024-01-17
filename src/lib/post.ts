@@ -11,13 +11,13 @@ export interface PostMetadata {
 }
 
 export interface Post {
-  component: typeof SvelteComponent;
+  component: typeof SvelteComponent<any>;
   slug: string;
   metadata: PostMetadata;
 }
 
 type PostComponent = {
-  default: typeof SvelteComponent;
+  default: typeof SvelteComponent<any>;
   metadata: PostMetadata;
 };
 
@@ -64,7 +64,7 @@ export async function getMetadata(slug: string): Promise<PostMetadata> {
   }
 }
 
-export async function getComponent(slug: string): Promise<typeof SvelteComponent> {
+export async function getComponent(slug: string): Promise<typeof SvelteComponent<any>> {
   const posts = await all();
 
   const post = posts.find((post) => post.slug === slug);

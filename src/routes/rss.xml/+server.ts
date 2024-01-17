@@ -1,7 +1,7 @@
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from "./$types";
 
-import config from '$lib/config';
-import * as post from '$lib/post';
+import config from "$lib/config";
+import * as post from "$lib/post";
 
 export const prerender = true;
 
@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
   const posts = await post.all();
 
   const headers = {
-    'Content-Type': 'application/xml'
+    "Content-Type": "application/xml",
   };
 
   const xml = `
@@ -19,7 +19,9 @@ export const GET: RequestHandler = async () => {
         <link>${config.url}</link>
         <description>${config.description}</description>
         <atom:link href="${config.url}/feed.xml" rel="self" type="application/rss+xml"/>
-        ${posts.map(post => `
+        ${posts
+          .map(
+            (post) => `
           <item>
             <title>${post.metadata.title}</title>
             <link>${config.url}/${post.slug}</link>
@@ -27,10 +29,12 @@ export const GET: RequestHandler = async () => {
             <description>${post.metadata.subtitle}</description>
             <pubDate>${new Date(post.metadata.date).toUTCString()}</pubDate>
           </item>
-        `).join('\n')}
+        `
+          )
+          .join("\n")}
 			</channel>
 		</rss>
-	`.trim()
+	`.trim();
 
   return new Response(xml, { headers });
-}
+};

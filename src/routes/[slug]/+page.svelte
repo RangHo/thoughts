@@ -1,15 +1,15 @@
 <script lang="ts">
-  import Giscus from '@giscus/svelte';
-  import { ScaleOut } from 'svelte-loading-spinners';
-  import { MetaTags } from 'svelte-meta-tags';
+  import Giscus from "@giscus/svelte";
+  import { ScaleOut } from "svelte-loading-spinners";
+  import { MetaTags } from "svelte-meta-tags";
 
-  import { getComponent } from '$lib/post';
-  import { colorMode } from '$lib/dark';
-  import config from '$lib/config';
+  import { getComponent } from "$lib/post";
+  import { colorMode } from "$lib/dark";
+  import config from "$lib/config";
 
-  import type { PageData } from './$types';
+  import type { PageData } from "./$types";
 
-  import './styles.postcss';
+  import "./styles.postcss";
 
   export let data: PageData;
 
@@ -21,23 +21,20 @@
   description={data.subtitle}
   canonical={`${config.url}/${data.slug}`}
   openGraph={{
-              url: `https://thoughts.rangho.me/${data.slug}`,
-              title: data.title,
-              description: data.subtitle,
-              siteName: config.name,
-            }}
+    url: `https://thoughts.rangho.me/${data.slug}`,
+    title: data.title,
+    description: data.subtitle,
+    siteName: config.name,
+  }}
   twitter={{
-            handle: '@RangHo_777',
-            cardType: 'summary',
-            title: data.title,
-            description: data.subtitle,
-          }}
+    handle: "@RangHo_777",
+    cardType: "summary",
+    title: data.title,
+    description: data.subtitle,
+  }}
 />
 
-
-<header
-  class="pt-8 font-content antialiased"
->
+<header class="pt-8 font-content antialiased">
   <hgroup
     class="pt-2 pb-4 mx-auto max-w-4xl border-b-2 border-gray-200 dark:border-gray-700 text-center"
   >
@@ -54,9 +51,7 @@
     </div>
   </hgroup>
 </header>
-<main
-  class="pt-8 pb-16 lg:pt-12 lg:pb-24"
->
+<main class="pt-8 pb-16 lg:pt-12 lg:pb-24">
   <div class="flex flex-col justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen">
     <article class="mx-auto w-full max-w-4xl prose dark:prose-invert">
       {#await target}
@@ -67,7 +62,7 @@
         <svelte:component this={target} />
       {:catch error}
         <p>error: {error.message}</p>
-        {/await}
+      {/await}
     </article>
 
     <div class="mx-auto w-full max-w-4xl">

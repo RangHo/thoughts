@@ -1,8 +1,8 @@
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from "./$types";
 
-import { error } from '@sveltejs/kit';
+import { error } from "@sveltejs/kit";
 
-import * as post from '$lib/post';
+import * as post from "$lib/post";
 
 export const load: PageServerLoad = async ({ params }) => {
   const { slug } = params;
@@ -13,13 +13,13 @@ export const load: PageServerLoad = async ({ params }) => {
     return {
       slug,
       title: target.title,
-      subtitle: target.subtitle || '',
-      author: target.author || '',
+      subtitle: target.subtitle || "",
+      author: target.author || "",
       date: target.date,
       language: target.language,
     };
   } catch (err) {
-    throw error(404, 'Post not found');
+    throw error(404, "Post not found");
   }
 };
 

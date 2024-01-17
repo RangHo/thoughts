@@ -1,6 +1,6 @@
-import slugify from 'slugify';
+import slugify from "slugify";
 
-import type { SvelteComponent } from 'svelte';
+import type { SvelteComponent } from "svelte";
 
 export interface PostMetadata {
   title: string;
@@ -21,7 +21,7 @@ type PostComponent = {
   metadata: PostMetadata;
 };
 
-const imports = import.meta.glob('$posts/*.svelte');
+const imports = import.meta.glob("$posts/*.svelte");
 
 export async function all() {
   let posts: Post[] = [];
@@ -34,12 +34,12 @@ export async function all() {
     const component = module.default;
     const metadata = module.metadata;
     const rawname = filepath
-      .split('/')
+      .split("/")
       .pop()!
-      .replace(/\.svelte$/, '')
-      .replace(/_/g, ' ');
+      .replace(/\.svelte$/, "")
+      .replace(/_/g, " ");
     const slug = slugify(rawname, {
-      replacement: '-',
+      replacement: "-",
       lower: true,
     });
     posts.push({

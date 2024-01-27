@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Setup Emacs
         uses: purcell/setup-emacs@master
@@ -21,7 +23,7 @@ jobs:
 
       - name: Convert all posts
         run: |
-          emacs --script scripts/org2svelte.el src/posts/*.org
+          emacs --script scripts/convert.el src/posts/*.org
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2

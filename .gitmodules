@@ -1,0 +1,3 @@
+[submodule "scripts/ox-svelte"]
+	path = scripts/ox-svelte
+	url = https://github.com/RangHo/ox-svelte

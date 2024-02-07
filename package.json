@@ -39,7 +39,6 @@
     "prettier": "^3.2.4",
     "prettier-plugin-svelte": "^3.1.2",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "rehype-stringify": "^10.0.0",
     "slugify": "^1.6.6",
     "svelte": "^4.0.5",
     "svelte-check": "^3.6.0",
@@ -48,10 +47,6 @@
     "tailwindcss": "^3.3.6",
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
-    "unified": "^11.0.4",
-    "uniorg": "^1.1.1",
-    "uniorg-parse": "^2.1.1",
-    "uniorg-rehype": "^1.1.1",
     "vite": "^5.0.0",
     "vitest": "^1.0.0"
   },

@@ -1,13 +1,11 @@
 import type { RequestHandler } from "./$types";
 
 import config from "$lib/config";
-import * as post from "$lib/post";
+import { posts } from "$lib/post";
 
 export const prerender = true;
 
 export const GET: RequestHandler = async () => {
-  const posts = await post.all();
-
   const headers = {
     "Content-Type": "application/xml",
   };

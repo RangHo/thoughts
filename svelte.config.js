@@ -12,6 +12,11 @@ const config = {
       fallback: "404.html",
     }),
 
+    // Prerendering settings
+    prerender: {
+      handleHttpError: 'warn',
+    },
+
     // Declare custom import aliases
     alias: {
       $posts: "./src/posts",

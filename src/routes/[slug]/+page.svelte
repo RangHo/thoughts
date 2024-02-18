@@ -3,7 +3,6 @@
   import { ScaleOut } from "svelte-loading-spinners";
   import { MetaTags } from "svelte-meta-tags";
 
-  import { getComponent } from "$lib/post";
   import { colorMode } from "$lib/dark";
   import config from "$lib/config";
 
@@ -12,25 +11,23 @@
   import "./styles.postcss";
 
   export let data: PageData;
-
-  let target = getComponent(data.slug);
 </script>
 
 <MetaTags
-  title={data.title}
-  description={data.subtitle}
+  title={data.metadata.title}
+  description={data.metadata.subtitle}
   canonical={`${config.url}/${data.slug}`}
   openGraph={{
     url: `https://thoughts.rangho.me/${data.slug}`,
-    title: data.title,
-    description: data.subtitle,
+    title: data.metadata.title,
+    description: data.metadata.subtitle,
     siteName: config.name,
   }}
   twitter={{
     handle: "@RangHo_777",
     cardType: "summary",
-    title: data.title,
-    description: data.subtitle,
+    title: data.metadata.title,
+    description: data.metadata.subtitle,
   }}
 />
 
@@ -39,14 +36,14 @@
     class="pt-2 pb-4 mx-auto max-w-4xl border-b-2 border-gray-200 dark:border-gray-700 text-center"
   >
     <h1 class="pb-2 text-3xl lg:text-4xl font-heading font-bold">
-      {data.title}
+      {data.metadata.title}
     </h1>
     <div class="flex flex-col justify-center">
       <p class="text-xl font-heading font-semibold text-gray-400 dark:text-gray-500">
-        {data.subtitle}
+        {data.metadata.subtitle}
       </p>
       <p class="mt-2 text-sm font-heading font-semibold text-gray-400 dark:text-gray-500">
-        {data.date}
+        {data.metadata.date}
       </p>
     </div>
   </hgroup>
@@ -54,15 +51,7 @@
 <main class="pt-8 pb-16 lg:pt-12 lg:pb-24">
   <div class="flex flex-col justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen">
     <article class="mx-auto w-full max-w-4xl prose dark:prose-invert">
-      {#await target}
-        <div class="flex justify-center">
-          <ScaleOut color="black" />
-        </div>
-      {:then target}
-        <svelte:component this={target} />
-      {:catch error}
-        <p>error: {error.message}</p>
-      {/await}
+      <svelte:component this={data.component} />
     </article>
 
     <div class="mx-auto w-full max-w-4xl">
@@ -77,7 +66,7 @@
         emitMetadata="0"
         inputPosition="top"
         theme={$colorMode}
-        lang={data.language}
+        lang={data.metadata.language}
       />
     </div>
   </div>

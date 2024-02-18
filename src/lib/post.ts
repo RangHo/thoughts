@@ -1,77 +1,43 @@
-import slugify from "slugify";
+import slugify from 'slugify';
 
-import type { SvelteComponent } from "svelte";
+import type { Post, PostModule } from '$lib/types';
 
-export interface PostMetadata {
-  title: string;
-  subtitle?: string;
-  author?: string;
-  date: string;
-  language: string;
-}
+const imports = import.meta.glob('$posts/*.svelte', { eager: true });
 
-export interface Post {
-  component: typeof SvelteComponent<any>;
-  slug: string;
-  metadata: PostMetadata;
-}
-
-type PostComponent = {
-  default: typeof SvelteComponent<any>;
-  metadata: PostMetadata;
-};
-
-const imports = import.meta.glob("$posts/*.svelte");
-
-export async function all() {
+export const posts = (() => {
   let posts: Post[] = [];
 
-  for (const filepath in imports) {
-    const loader = imports[filepath];
-    const module = await loader().then((module) => {
-      return module as PostComponent;
-    });
-    const component = module.default;
+  // Grab metadata from each post
+  for (const path in imports) {
+    const module = imports[path] as PostModule;
     const metadata = module.metadata;
-    const rawname = filepath
-      .split("/")
+    const original = path
+      .split('/')
       .pop()!
-      .replace(/\.svelte$/, "")
-      .replace(/_/g, " ");
-    const slug = slugify(rawname, {
-      replacement: "-",
-      lower: true,
-    });
+      .replace(/\.svelte$/, '')
+    const slug = slugify(
+      original
+        .replace(/_/g, ' '),
+      {
+        replacement: '-',
+        lower: true
+      }
+    );
+
     posts.push({
-      component,
+      original,
       slug,
-      metadata,
+      metadata
     });
   }
+
+  // Sort by date
+  posts.sort((a, b) => {
+    const dateA = new Date(a.metadata.date);
+    const dateB = new Date(b.metadata.date);
+
+    return dateA > dateB ? -1 : dateA < dateB ? 1 : 0;
+  });
 
   return posts;
-}
-
-export async function getMetadata(slug: string): Promise<PostMetadata> {
-  const posts = await all();
-
-  const post = posts.find((post) => post.slug === slug);
-
-  if (post) {
-    return post.metadata;
-  } else {
-    throw new Error(`Post not found: ${slug}`);
-  }
-}
-
-export async function getComponent(slug: string): Promise<typeof SvelteComponent<any>> {
-  const posts = await all();
-
-  const post = posts.find((post) => post.slug === slug);
-
-  if (post) {
-    return post.component;
-  } else {
-    throw new Error(`Post not found: ${slug}`);
-  }
-}
+})();

@@ -85,6 +85,9 @@ devDependencies:
   svelte-meta-tags:
     specifier: ^3.1.0
     version: 3.1.0(svelte@4.2.3)(typescript@5.2.2)
+  svelte-preprocess-import-assets:
+    specifier: ^1.1.0
+    version: 1.1.0(svelte@4.2.3)
   tailwindcss:
     specifier: ^3.3.6
     version: 3.3.6
@@ -2630,6 +2633,25 @@ packages:
       svelte: 4.2.3
     transitivePeerDependencies:
       - typescript
+    dev: true
+
+  /svelte-parse-markup@0.1.2(svelte@4.2.3):
+    resolution: {integrity: sha512-DycY7DJr7VqofiJ63ut1/NEG92HrWWL56VWITn/cJCu+LlZhMoBkBXT4opUitPEEwbq1nMQbv4vTKUfbOqIW1g==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0
+    dependencies:
+      svelte: 4.2.3
+    dev: true
+
+  /svelte-preprocess-import-assets@1.1.0(svelte@4.2.3):
+    resolution: {integrity: sha512-pWjoceFcGAG6vUg50JZXfhr5V4amxI2aYbcsn6CJrytcA528NNgaHnvMR1EwJYBIpZEf302I8Pyw0YeEta1zbg==}
+    peerDependencies:
+      svelte: ^3.37.0 || ^4.0.0 || ^5.0.0-next.1
+    dependencies:
+      estree-walker: 3.0.3
+      magic-string: 0.30.5
+      svelte: 4.2.3
+      svelte-parse-markup: 0.1.2(svelte@4.2.3)
     dev: true
 
   /svelte-preprocess@5.1.0(postcss@8.4.32)(svelte@4.2.3)(typescript@5.2.2):

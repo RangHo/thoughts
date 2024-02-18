@@ -23,6 +23,7 @@
   "devDependencies": {
     "@giscus/svelte": "^2.4.0",
     "@playwright/test": "^1.28.1",
+    "@svelte-put/preprocess-auto-slug": "^1.0.1",
     "@sveltejs/adapter-static": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",

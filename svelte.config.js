@@ -1,12 +1,14 @@
 import adapter from "@sveltejs/adapter-static";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import { importAssets } from 'svelte-preprocess-import-assets';
+import { autoSlug } from '@svelte-put/preprocess-auto-slug';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: [
     vitePreprocess(),
-    importAssets()
+    importAssets(),
+    autoSlug(),
   ],
 
   kit: {

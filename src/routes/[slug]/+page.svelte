@@ -1,6 +1,5 @@
 <script lang="ts">
   import Giscus from "@giscus/svelte";
-  import { ScaleOut } from "svelte-loading-spinners";
   import { MetaTags } from "svelte-meta-tags";
 
   import { colorMode } from "$lib/dark";

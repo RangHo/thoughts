@@ -82,9 +82,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.0
     version: 3.6.0(postcss@8.4.32)(svelte@4.2.3)
-  svelte-loading-spinners:
-    specifier: ^0.3.4
-    version: 0.3.4
   svelte-meta-tags:
     specifier: ^3.1.0
     version: 3.1.0(svelte@4.2.3)(typescript@5.2.2)
@@ -2636,10 +2633,6 @@ packages:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
       svelte: 4.2.3
-    dev: true
-
-  /svelte-loading-spinners@0.3.4:
-    resolution: {integrity: sha512-vKaW71QMCBcTNijAGc0mUl8k3DQ66iYmp6MB8BMGCXyWk82bTrcLy8FOnSm9fE+8q6TwzD6PLUoYFHt0II93Xw==}
     dev: true
 
   /svelte-meta-tags@3.1.0(svelte@4.2.3)(typescript@5.2.2):

@@ -8,3 +8,8 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Ignore post build artifacts
+/src/posts/*
+!/src/posts/*.org
+!/src/posts/assets

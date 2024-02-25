@@ -16,7 +16,6 @@ export const load: PageLoad = async ({ params }) => {
       ...target
     };
   } catch (err) {
-    console.log(err);
     error(404, "Post not found");
   }
 };

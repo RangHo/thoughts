@@ -1,14 +1,8 @@
 import type { SvelteComponent } from 'svelte';
-
-export type PostMetadata = Record<string, string>;
-
-export type PostModule = {
-  default: typeof SvelteComponent<any>;
-  metadata: PostMetadata;
-};
+import type { OrgMetadata } from 'ox-svelte';
 
 export type Post = {
   original: string;
   slug: string;
-  metadata: PostMetadata;
+  metadata: OrgMetadata;
 };

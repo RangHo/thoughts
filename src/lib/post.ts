@@ -1,6 +1,8 @@
 import slugify from 'slugify';
 
-import type { Post, PostModule } from '$lib/types';
+import type { Post } from '$lib/types';
+
+import type { OrgModule } from 'ox-svelte';
 
 const imports = import.meta.glob('$posts/*.svelte', { eager: true });
 
@@ -9,7 +11,7 @@ export const posts = (() => {
 
   // Grab metadata from each post
   for (const path in imports) {
-    const module = imports[path] as PostModule;
+    const module = imports[path] as OrgModule;
     const metadata = module.metadata;
     const original = path
       .split('/')

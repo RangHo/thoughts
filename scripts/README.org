@@ -1,0 +1,13 @@
+* Org to Svelte converter script
+
+An Emacs Lisp script to convert Org documents into Svelte components.
+
+Make sure to initialize the ~ox-svelte~ submodule in the same diretctory.
+
+** Usage
+
+Simply call ~emacs~ as a script mode with the files to convert.
+
+#+begin_src sh
+  emacs --script convert.el /path/to/document1.org /path/to/document2.org ...
+#+end_src

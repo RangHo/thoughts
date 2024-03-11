@@ -23,7 +23,7 @@ jobs:
 
       - name: Convert all posts
         run: |
-          emacs --script scripts/convert.el src/posts/*.org
+          emacs --script lib/org-to-svelte/convert.el src/posts/*.org
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2

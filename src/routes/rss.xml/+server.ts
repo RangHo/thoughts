@@ -25,7 +25,7 @@ export const GET: RequestHandler = async () => {
             <link>${config.url}/${post.slug}</link>
             <guid>${config.url}/${post.slug}</guid>
             <description>${post.metadata.subtitle}</description>
-            <pubDate>${new Date(post.metadata.date).toUTCString()}</pubDate>
+            <pubDate>${new Date(post.metadata.date || 0).toUTCString()}</pubDate>
           </item>
         `
           )

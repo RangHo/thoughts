@@ -22,9 +22,6 @@ devDependencies:
   '@playwright/test':
     specifier: ^1.42.1
     version: 1.42.1
-  '@svelte-put/preprocess-auto-slug':
-    specifier: ^1.0.1
-    version: 1.0.1(svelte@4.2.12)
   '@sveltejs/adapter-static':
     specifier: ^3.0.1
     version: 3.0.1(@sveltejs/kit@2.5.4)
@@ -608,17 +605,6 @@ packages:
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-    dev: true
-
-  /@svelte-put/preprocess-auto-slug@1.0.1(svelte@4.2.12):
-    resolution: {integrity: sha512-hfNWTQtGyeaijaE/gVlywczXsHW/aedsaRVBC0PqwdkMKm8zFVg8qAS2YpsDnUEaA5ycFuS/+/bxOKvgZLfE8Q==}
-    peerDependencies:
-      svelte: ^3.55.0 || ^4.0.0
-    dependencies:
-      github-slugger: 2.0.0
-      magic-string: 0.30.8
-      svelte: 4.2.12
-      svelte-parse-markup: 0.1.2(svelte@4.2.12)
     dev: true
 
   /@sveltejs/adapter-static@3.0.1(@sveltejs/kit@2.5.4):
@@ -1599,10 +1585,6 @@ packages:
     resolution: {integrity: sha512-t3LL0qbSO3JXq3uyQeKpF5CegstGfKX/0gI6eDe1cmnI7D56R7j52yLdzw4pdKrg3VnufwCgCM3FDz7G1Qr6lg==}
     dependencies:
       lit: 3.1.2
-    dev: true
-
-  /github-slugger@2.0.0:
-    resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
     dev: true
 
   /glob-parent@5.1.2:

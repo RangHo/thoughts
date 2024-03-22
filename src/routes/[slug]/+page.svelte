@@ -49,7 +49,7 @@
 </header>
 <main class="pt-8 pb-16 lg:pt-12 lg:pb-24">
   <div class="flex flex-col justify-between px-4 sm:px-6 lg:px-8 mx-auto max-w-screen">
-    <article class="mx-auto w-full max-w-4xl prose dark:prose-invert">
+    <article class="mx-auto w-full max-w-4xl prose prose-code:font-monospace dark:prose-invert">
       <svelte:component this={data.component} />
     </article>
 

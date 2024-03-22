@@ -5,9 +5,9 @@ export default {
   theme: {
     extend: {},
     fontFamily: {
-      heading: ['"GyeonggiTitleM"', "sans-serif"],
-      content: ['"GyeonggiBatang"', "sans-serif"],
-      monospace: ['"DM Mono"', "monospace"],
+      heading: ['"DNFBitBitv2"', 'sans-serif'],
+      content: ['"NeoDunggeunmo Pro"', 'sans-serif'],
+      monospace: ['"NeoDunggeunmo Code"', 'monospace'],
     },
   },
   plugins: [require("@tailwindcss/typography")],

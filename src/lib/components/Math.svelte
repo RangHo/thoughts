@@ -1,8 +1,8 @@
 <script lang="ts">
-  import katex from "katex";
-  import "katex/dist/katex.min.css";
+  import katex from 'katex';
+  import 'katex/dist/katex.min.css';
 
-  export let expression = "";
+  export let expression = '';
   export let display = false;
 
   const katexOptions: katex.KatexOptions = {

@@ -1,13 +1,13 @@
-import type { RequestHandler } from "./$types";
+import type { RequestHandler } from './$types';
 
-import config from "$lib/config";
-import { posts } from "$lib/post";
+import config from '$lib/config';
+import { posts } from '$lib/post';
 
 export const prerender = true;
 
 export const GET: RequestHandler = async () => {
   const headers = {
-    "Content-Type": "application/xml",
+    'Content-Type': 'application/xml',
   };
 
   const xml = `
@@ -29,7 +29,7 @@ export const GET: RequestHandler = async () => {
           </item>
         `
           )
-          .join("\n")}
+          .join('\n')}
 			</channel>
 		</rss>
 	`.trim();

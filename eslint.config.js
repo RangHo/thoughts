@@ -7,7 +7,7 @@ import sveltePlugin from 'eslintplugin-svelte';
 const config = [
   // Ignore generated files
   {
-    ignores: [".svelte-kit/**/*"],
+    ignores: ['.svelte-kit/**/*'],
   },
 
   // Load predefined configs
@@ -15,24 +15,21 @@ const config = [
 
   // JavaScript settings
   {
-    files: ["**/*.js"],
+    files: ['**/*.js'],
   },
 
   // TypeScript settings
   {
-    files: ["**/*.ts"],
-    ignores: [
-      "playwright.config.ts",
-      "vite.config.ts",
-    ],
+    files: ['**/*.ts'],
+    ignores: ['playwright.config.ts', 'vite.config.ts'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: "./tsconfig.json",
+        project: './tsconfig.json',
       },
     },
     plugins: {
-      "@typescript-eslint": tsPlugin,
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
@@ -41,12 +38,12 @@ const config = [
 
   // Svelte settings
   {
-    files: ["**/*.svelte"],
+    files: ['**/*.svelte'],
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
         parser: tsParser,
-        project: "./tsconfig.json",
+        project: './tsconfig.json',
         extraFileExtensions: ['.svelte'],
       },
     },
@@ -57,8 +54,8 @@ const config = [
     rules: {
       ...tsPlugin.configs.recommended.rules,
       ...sveltePlugin.configs.recommended.rules,
-    }
-  }
+    },
+  },
 ];
 
 export default config;

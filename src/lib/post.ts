@@ -16,20 +16,16 @@ export const posts = (() => {
     const original = path
       .split('/')
       .pop()!
-      .replace(/\.org$/, '')
-    const slug = slugify(
-      original
-        .replace(/_/g, ' '),
-      {
-        replacement: '-',
-        lower: true
-      }
-    );
+      .replace(/\.org$/, '');
+    const slug = slugify(original.replace(/_/g, ' '), {
+      replacement: '-',
+      lower: true,
+    });
 
     posts.push({
       original,
       slug,
-      metadata
+      metadata,
     });
   }
 

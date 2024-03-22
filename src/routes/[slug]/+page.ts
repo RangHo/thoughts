@@ -1,8 +1,8 @@
-import type { PageLoad } from "./$types";
+import type { PageLoad } from './$types';
 
-import { error } from "@sveltejs/kit";
+import { error } from '@sveltejs/kit';
 
-import { posts } from "$lib/post";
+import { posts } from '$lib/post';
 
 export const load: PageLoad = async ({ params }) => {
   const { slug } = params;
@@ -13,10 +13,10 @@ export const load: PageLoad = async ({ params }) => {
 
     return {
       component: post.default,
-      ...target
+      ...target,
     };
   } catch (err) {
     console.error(err);
-    error(404, "Post not found");
+    error(404, 'Post not found');
   }
 };

@@ -1,13 +1,13 @@
 <script lang="ts">
-  import Giscus from "@giscus/svelte";
-  import { MetaTags } from "svelte-meta-tags";
+  import Giscus from '@giscus/svelte';
+  import { MetaTags } from 'svelte-meta-tags';
 
-  import { colorMode } from "$lib/dark";
-  import config from "$lib/config";
+  import { colorMode } from '$lib/dark';
+  import config from '$lib/config';
 
-  import type { PageData } from "./$types";
+  import type { PageData } from './$types';
 
-  import "./styles.postcss";
+  import './styles.postcss';
 
   export let data: PageData;
 </script>
@@ -23,8 +23,8 @@
     siteName: config.name,
   }}
   twitter={{
-    handle: "@RangHo_777",
-    cardType: "summary",
+    handle: '@RangHo_777',
+    cardType: 'summary',
     title: data.metadata.title,
     description: data.metadata.subtitle,
   }}

@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["src/**/*.{html,js,ts,svelte}"],
-  darkMode: "class",
+  content: ['src/**/*.{html,js,ts,svelte}'],
+  darkMode: 'class',
   theme: {
     extend: {},
     fontFamily: {
@@ -10,5 +10,5 @@ export default {
       monospace: ['"NeoDunggeunmo Code"', 'monospace'],
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require('@tailwindcss/typography')],
 };

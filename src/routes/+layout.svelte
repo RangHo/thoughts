@@ -1,15 +1,15 @@
 <script lang="ts">
-  import Analytics from "$lib/components/Analytics.svelte";
+  import Analytics from '$lib/components/Analytics.svelte';
 
-  import "../app.postcss";
+  import '../app.postcss';
 
-  import { browser } from "$app/environment";
+  import { browser } from '$app/environment';
 
-  import { colorMode } from "$lib/dark";
+  import { colorMode } from '$lib/dark';
 
   colorMode.subscribe((value) => {
     if (browser) {
-      document.documentElement.classList.remove("dark", "light");
+      document.documentElement.classList.remove('dark', 'light');
       document.documentElement.classList.add(value);
     }
   });
@@ -17,7 +17,7 @@
 
 <Analytics measurementId="G-E86FB6SVBE" />
 
-<button on:click={() => colorMode.update((v) => (v === "dark" ? "light" : "dark"))}>
+<button on:click={() => colorMode.update((v) => (v === 'dark' ? 'light' : 'dark'))}>
   Toggle
 </button>
 

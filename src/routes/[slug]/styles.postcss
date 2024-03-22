@@ -1,19 +1,25 @@
 /**
  * Style definition for posts.
- *
- * Since `org2svelte.el` generates bare HTML, we need to define elemental styles.
  */
 
 /* --- Images --- */
 
 .prose figure {
-  @apply flex flex-col items-center justify-center;
+  @apply flex
+         flex-col
+         items-center
+         justify-center;
 }
 
 /* --- Blockquotes --- */
 
 .prose blockquote {
-  @apply p-4 border-l-4 border-gray-300 bg-gray-50 dark:bg-gray-900 dark:border-gray-400;
+  @apply p-4
+         border-l-4
+         border-gray-300
+         bg-gray-50
+         dark:bg-gray-900
+         dark:border-gray-400;
 }
 
 .prose blockquote p {
@@ -22,8 +28,55 @@
 
 /* --- Admonitions --- */
 
+.prose .warning {
+  @apply p-4
+         border-l-4
+         border-yellow-500
+         bg-yellow-50
+         dark:bg-yellow-900
+         dark:border-yellow-400;
+}
+
+.prose .warning p {
+  @apply indent-0;
+}
+
+.prose .warning p:first-child {
+  @apply mt-0;
+}
+
+.prose .warning p:last-child {
+  @apply mb-0;
+}
+
+.prose .caution {
+  @apply p-4
+         border-l-4
+         border-red-500
+         bg-red-50
+         dark:bg-red-900
+         dark:border-red-400;
+}
+
+.prose .caution p {
+  @apply indent-0;
+}
+
+.prose .caution p:first-child {
+  @apply mt-0;
+}
+
+.prose .caution p:last-child {
+  @apply mb-0;
+}
+
 .prose .note {
-  @apply p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900 dark:border-blue-400;
+  @apply p-4
+         border-l-4
+         border-blue-500
+         dark:border-blue-400
+         bg-blue-50
+         dark:bg-blue-900;
 }
 
 .prose .note p {
@@ -39,7 +92,12 @@
 }
 
 .prose .tip {
-  @apply p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-900 dark:border-green-400;
+  @apply p-4
+         border-l-4
+         border-green-500
+         dark:border-green-400
+         bg-green-50
+         dark:bg-green-900;
 }
 
 .prose .tip p {
@@ -55,7 +113,12 @@
 }
 
 .prose .important {
-  @apply p-4 border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900 dark:border-yellow-400;
+  @apply p-4
+         border-l-4
+         border-purple-500
+         dark:border-purple-400
+         bg-purple-50
+         dark:bg-purple-900;
 }
 
 .prose .important p {
@@ -70,18 +133,9 @@
   @apply mb-0;
 }
 
-.prose .caution {
-  @apply p-4 border-l-4 border-red-500 bg-red-50 dark:bg-red-900 dark:border-red-400;
-}
+/* ---- Text styles ---- */
 
-.prose .caution p {
-  @apply indent-0;
-}
-
-.prose .caution p:first-child {
-  @apply mt-0;
-}
-
-.prose .caution p:last-child {
-  @apply mb-0;
+.prose del {
+  @apply text-gray-500
+         dark:text-gray-400;
 }

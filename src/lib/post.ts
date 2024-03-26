@@ -29,12 +29,12 @@ export const posts = (() => {
     });
   }
 
-  // Sort by date
+  // Sort posts by date and then slug
   posts.sort((a, b) => {
     const dateA = new Date(a.metadata.date || 0);
     const dateB = new Date(b.metadata.date || 0);
-
-    return dateA > dateB ? -1 : dateA < dateB ? 1 : 0;
+    
+    return dateB.valueOf() - dateA.valueOf() || b.slug.localeCompare(a.slug);
   });
 
   return posts;

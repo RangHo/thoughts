@@ -10,8 +10,8 @@ const config = {
   preprocess: sequence([
     orgPreprocess({
       extensions: ['.org'],
-      latexEnvironmentFormat: '<Math expression={%s} display />',
-      latexFragmentFormat: '<Math expression={%s} />',
+      latexEnvironmentFormat: '<Math expr={%s} display />',
+      latexFragmentFormat: '<Math expr={%s} />',
       srcBlockFormat: "<Code lang={'%s'} code={%s} />",
       imports: {
         Math: '$lib/components/Math.svelte',

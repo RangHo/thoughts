@@ -1,6 +1,5 @@
 <script lang="ts">
   import hljs from 'highlight.js';
-  import he from 'he';
   import lightTheme from 'highlight.js/styles/tokyo-night-light.css?inline';
   import darkTheme from 'highlight.js/styles/tokyo-night-dark.css?inline';
 
@@ -17,16 +16,20 @@
 
   let highlighted = '';
 
-  $: highlighted = hljs.highlight(he.decode(code), { language: lang }).value;
+  $: highlighted = hljs.highlight(code, { language: lang }).value;
 </script>
 
 <!-- https://github.com/sveltejs/svelte/issues/5292#issuecomment-787743573 -->
-{@html `<${''}style>${hljsThemes[$colorMode]}</${''}style>`}
+<svelte:head>
+  {@html `<${''}style>${hljsThemes[$colorMode]}</${''}style>`}
+</svelte:head>
 
-{#if inline}
-  <code class="hljs language-{lang} font-monospace">{@html highlighted}</code>
-{:else}
-  <pre class="my-4 not-prose"><code class="hljs language-{lang} font-monospace"
-      >{@html highlighted}</code
-    ></pre>
-{/if}
+<slot {highlighted}>
+  {#if inline}
+    <code class="hljs language-{lang} font-monospace">{@html highlighted}</code>
+  {:else}
+    <pre class="my-4 not-prose"><code class="hljs language-{lang} font-monospace"
+        >{@html highlighted}</code
+      ></pre>
+  {/if}
+</slot>

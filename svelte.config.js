@@ -5,7 +5,7 @@ import { importAssets } from 'svelte-preprocess-import-assets';
 import { preprocessMeltUI, sequence } from '@melt-ui/pp';
 import orgPreprocess from 'svelte-preprocess-org';
 
-/** @type {import('@sveltejs/kit').Config}*/
+/** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: sequence([
     orgPreprocess({

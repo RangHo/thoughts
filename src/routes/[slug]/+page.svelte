@@ -55,7 +55,7 @@
 
     <div class="mx-auto w-full max-w-4xl">
       <Giscus
-        repo="RangHo/thoughts.rangho.me"
+        repo="RangHo/thoughts"
         repoId="R_kgDOHtWVvw"
         category="Comments"
         categoryId="DIC_kwDOHtWVv84CT8zK"

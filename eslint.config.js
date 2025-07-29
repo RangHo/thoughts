@@ -1,61 +1,44 @@
-import eslint from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import svelteParser from 'svelte-eslint-parser';
-import sveltePlugin from 'eslintplugin-svelte';
+import { fileURLToPath } from 'node:url'
+import globals from 'globals'
+import { includeIgnoreFile } from '@eslint/compat'
 
-const config = [
-  // Ignore generated files
+import css from '@eslint/css'
+import js from '@eslint/js'
+import svelte from 'eslint-plugin-svelte'
+import ts from 'typescript-eslint'
+
+import stylistic from '@stylistic/eslint-plugin'
+import unocss from '@unocss/eslint-plugin'
+
+const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url))
+
+export default ts.config(
+  // Re-use the .gitignore file.
+  includeIgnoreFile(gitignorePath),
+  // Per-language configurations.
+  css.configs.recommended,
+  js.configs.recommended,
+  ts.configs.recommended,
+  svelte.configs['flat/recommended'],
   {
-    ignores: ['.svelte-kit/**/*'],
-  },
-
-  // Load predefined configs
-  eslint.configs.recommended,
-
-  // JavaScript settings
-  {
-    files: ['**/*.js'],
-  },
-
-  // TypeScript settings
-  {
-    files: ['**/*.ts'],
-    ignores: ['playwright.config.ts', 'vite.config.ts'],
+    files: ['**/*.svelte', '**/*.svelte.ts'],
     languageOptions: {
-      parser: tsParser,
       parserOptions: {
-        project: './tsconfig.json',
+        parser: ts.parser,
       },
     },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-    },
-    rules: {
-      ...tsPlugin.configs.recommended.rules,
-    },
   },
-
-  // Svelte settings
+  // Runtime environment.
   {
-    files: ['**/*.svelte'],
     languageOptions: {
-      parser: svelteParser,
-      parserOptions: {
-        parser: tsParser,
-        project: './tsconfig.json',
-        extraFileExtensions: ['.svelte'],
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
-    plugins: {
-      svelte: sveltePlugin,
-      '@typescript-eslint': tsPlugin,
-    },
-    rules: {
-      ...tsPlugin.configs.recommended.rules,
-      ...sveltePlugin.configs.recommended.rules,
-    },
   },
-];
-
-export default config;
+  // Style-related.
+  stylistic.configs.recommended,
+  // External utilities.
+  unocss.configs.flat,
+)

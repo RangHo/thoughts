@@ -1,27 +1,25 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-static'
 
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import { importAssets } from 'svelte-preprocess-import-assets';
-import { preprocessMeltUI, sequence } from '@melt-ui/pp';
-import orgPreprocess from 'svelte-preprocess-org';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { sveltePreprocess } from 'svelte-preprocess'
+import orgPreprocess from 'svelte-preprocess-org'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  preprocess: sequence([
+  preprocess: [
     orgPreprocess({
       extensions: ['.org'],
-      latexEnvironmentFormat: '<Math expr={%s} display />',
-      latexFragmentFormat: '<Math expr={%s} />',
-      srcBlockFormat: "<Code lang={'%s'} code={%s} />",
-      imports: {
-        Math: '$lib/components/Math.svelte',
-        Code: '$lib/components/Code.svelte',
-      },
+      idLocations: ['src/posts/**/*.org'],
+      latexEnvironmentFormat: '<Math expression={%s} display />',
+      latexFragmentFormat: '<Math expression={%s} />',
+      srcBlockFormat: '<Code lang={\'%s\'} code={%s} />',
+      additionalComponents: [
+        { binding: ['Math', 'Code'], module: '@rangho/ui' },
+      ],
     }),
+    sveltePreprocess(),
     vitePreprocess(),
-    importAssets(),
-    preprocessMeltUI(),
-  ]),
+  ],
   extensions: ['.svelte', '.org'],
   kit: {
     // Use static adapter to render individual pages as static HTML
@@ -38,5 +36,5 @@ const config = {
       $posts: './src/posts',
     },
   },
-};
-export default config;
+}
+export default config

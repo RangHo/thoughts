@@ -1,5 +1,0 @@
-root = true
-
-[*.{html,svelte,js,ts,css,postcss,json}]
-indent_style = space
-indent_size = 2

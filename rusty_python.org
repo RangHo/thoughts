@@ -1,0 +1,722 @@
+#+title: Rusty Python
+#+subtitle: Rust + Python = ??????
+#+description: 우리가 어떤 민족입니까? 스까의 민족 아닙니까? 그러니 차세대 프로그래밍 언어 두 종류를 섞어 먹어봅시다.
+#+date: <2021-03-28 Sun>
+#+language: ko
+
+#+begin_tip
+이 포스트는 학교 세미나에서 발표한 내용을 바탕으로, 내용 보충 및 업데이트를 목적으로 작성하였습니다. 발표할 때 사용한 프레젠테이션은 [[https://slideshare.net/zu0107/rusty-python-229741370][SlideShare]]에서 보실 수 있어요. 
+#+end_tip
+
+저는 언어를 좋아합니다. 예전에는 영어 문법만 들어도 질색하는 평범한 학생이었지만 라틴어와 처음으로 만난 이래로 심심하면 위키백과에서 새 언어의 문법적 특징과 발화 샘플을 들어보는 이상한 사람이 돼 있었네요. 배우고 싶은 언어도 많지만... 언젠가는 하겠죠?
+
+또, 저는 사람의 언어 말고도 프로그래밍 언어도 엄청엄청 좋아합니다. 사실 프로그래밍 언어를 파다가 자연어에도 손을 대게 된 건지, 언어가 좋아서 열심히 보다가 프로그래밍 언어도 좋아하게 된 건지는 잘 모르겠지만요. 프로그래밍 언어의 복잡한 문법 요소가 들어맞아 컴퓨터가 이해할 수 있는 코드로 바뀌는 과정을 머릿속에서 그려 보면 가슴이 두근두근해지는 것 같은 느낌도 들고요.
+
+언어덕후가 여러 국가, 여러 민족의 언어를 공부하는 것처럼, 저도 나름 프로그래밍 언어 덕후라 여러 언어를 써 본 경험이 있습니다. C++, Java와 같은 초-메이저 언어부터, 들어는 봤지만 써 본 적은 없는 D나 Tcl, 듣기에도 생소한 Self까지 여러 언어를 사용해 봤어요. 앞으로는 Haskell, Elixir 같은 함수형 언어로 필드를 넓히려고 생각 중이네요.
+
+물론 여러 언어를 사용해 봤다고 호불호가 없다는 뜻은 아니에요! 요즘 제가 프로그램을 만들면 용도에 따라 두 가지 프로그래밍 언어로 개발을 하고 있어요. 하나는 시스템 프로그래밍 계의 떠오르는 샛별, *Rust*​(러스트)이고, 또 다른 하나는 스크립트 언어 세계의 부동의 1위, *Python*​(파이썬)입니다. 전자는 보통 컴파일해서 사용하는 프로그램이나 라이브러리를 개발할 때 많이 쓰고, 후자는 컴파일하기 불편하거나, GitHub 같은 곳에서 다운받아서 바로 사용해야 하는 시스템 유틸리티를 만들 때 자주 씁니다. ([[https://github.com/RangHo/mprisctl][mprisctl]]처럼요.)
+
+이 두 언어의 특징은 무엇이 있을까요? 제가 이 두 언어를 좋아하는 이유에 대해 잠깐 이야기해보도록 할까요?
+
+* 떠오르는 샛별, Rust
+
+#+caption: Rust의 귀여운 마스코트, Ferris the Crab
+#+name: fig:ferris-the-crab
+[[./assets/rusty_python/ferris-the-crab.png]]
+
+러스트는 Mozilla 재단의 Graydon Hoare가 설계한 시스템 프로그래밍 언어입니다. 초기에는 Mozilla의 실험적인 웹 렌더링 엔진인 [[https:github.com/servo/servo][Servo]]를 개발하기 위해 만들어졌어요. Servo의 목적은 보안이 뛰어나고, 병렬  렌더링을 지원하는 크로스 플랫폼 웹 렌더링 엔진이었기 때문에, 이 목적을 달성하기 위해 Rust 자체도 메모리 안전성을 보장할 수 있도록 설계되었습니다.
+
+러스트는 *차용 검사*​(borrow checking)라는 기능을 통해 소스코드를 바이너리로 컴파일하기 전에 런타임에 일어날 수 있는 메모리 관련 오류를 잡아내 줍니다. 다른 언어와 달리 이렇게 일어날 수도 있는 문제까지 전부 오류로 간주하고 컴파일을 중단하기 때문에, 프로그래머의 실수로 보안 허점을 만들어낼 가능성이 훨씬 적어져요.
+
+거기다 함수형 프로그래밍으로부터 불변성 값(immutable value)이라는 개념을 빌려오면서 병렬 연산도 더욱 직관적이고 간단하게 구현할 수 있게 됐어요. 기본 제공 라이브러리에서 mutex와 같은 병렬 연산에 필요한 자료구조까지 제공해 주기 때문에 데드락과 같은 상황에 골치를 썩일 필요가 없어졌죠.
+
+컴파일러는 LLVM을 백엔드로 사용해서 만들어졌기 때문에, clang이 지원하는 모든 곳에 러스트를 사용할 수 있다는 것도 장점이에요. (물론 임베디드 장치도 포함해서요!) 이미 존재하는 라이브러리와의 호환성 또한 고려해서 만들어졌기 때문에 C 또는 다른 언어와의 인터페이스도 쉽게 만들 수 있습니다.
+
+와, 이렇게 보니 완전 꿈의 시스템 프로그래밍 언어잖아요?
+
+#+caption: Python을 설계한 Guido van Rossum, by Daniel Stroud
+#+name: fig:guido-van-rossum
+[[./assets/rusty_python/guido-van-rossum.webp]]
+
+파이썬은 네덜란드의 개발자 Guido van Rossum(귀도 반 로섬)이 개발한 프로그래밍 언어입니다. 그가 네덜란드의 컴퓨터과학 연구 센터(Centrum Wiskunde & Informatic)에서 일할 때, 사이드 프로젝트로 틈틈이 개발한 언어예요. 당시 사용할 수 있는 언어는 C 언어 아니면 UNIX Shell 스크립트 중 하나였다고 하는데, C는 수작업으로 메모리 관리를 해야 한다는 점이 불편했고, UNIX Shell 스크립트는 너무 느려서 복잡한 계산을 처리하기 어려웠습니다. 결국 짜증 난 반 로섬이 개발한 언어가 파이썬이 되겠네요.
+
+파이썬은 "배터리 포함(Batteries included)"을 한 때 캐치프레이즈로 내세울 정도로 표준 라이브러리가 풍부한 것이 특징입니다. 웬만한 기능은 이미 프로그래밍 런타임을 설치할 때 함께 딸려 오기 때문에 개발 속도가 매우 빠르다는 장점이 있어요.
+
+거기다 클래스 기반 객체지향, 프로토타입 기반 객체지향, 함수형 등의 여러 패러다임을 지원하기에 원하는 방식으로 프로그램을 만들 수 있다는 장점도 있습니다. 원한다면 여러 패러다임을 섞어, 그때그때 필요한 기능을 더욱 빠르게 개발할 수 있어요.
+
+마지막으로 파이썬을 돋보이게 하는 부분은 바로 문법입니다. 중괄호를 쓰지 않고 들여쓰기로 블록을 구분한다니, 당시에는 정말 신선한 아이디어였죠. (원래는 ABC의 문법을 쏘옥 가져온 거지만... 근데 그 언어는 아무도 모르잖아요?) 반 로섬은 "사람이 읽을 수 있는 코드"를 중요시했기에 이렇게 못생기게 쓸 수 없는 문법을 추구한 것일지도 모르겠네요.
+
+이렇게 쉬운 문법과 완만한 러닝 커브로 파이썬은 스크립트 언어의 왕좌를 차지하게 됩니다.
+
+* 힙한 언어 + 힙했던 언어 = ???
+
+#+caption: "자, 재밌는 상상을 한 번 해 보자고."
+#+name: fig:fun-imagination
+[[./assets/rusty_python/fun-imagination.webp]]
+
+그런 의미에서, 재밌는 상상 운운하시는 분을 다시 한번 모셔 와 보겠습니다.
+
+#+caption: Excerpt from StackOverflow Developer Survey 2019
+#+name: fig: stackoverflow-survey-loved
+[[./assets/rusty_python/stackoverflow-2019-loved.png]]
+
+러스트는 최근 들어 사용자가 급증한, 소위 말하는 "힙한 언어"입니다. 위에서 볼 수 있듯이 러스트는 스택 오버플로우 사용자가 뽑은 가장 "사랑받는" 언어 설문조사에서 당당하게 1위를 차지했어요. 거기다 지금까지 많은 로우레벨 또는 네이티브 프로그래머를 고통받게 했던 메모리 관리를 대신 해 줄 수 있다는 점에서 C#이나 JavaScript와 같이 가비지 컬렉팅 언어 사용자들을 데려오면서 더욱 인기가 높아졌죠. 한때는 Go와 최고의 모던 네이티브 프로그래밍 언어 자리를 놓고 경쟁하곤 했습니다만, 결과를 보니 러스트의 압승인 것 같네요.
+
+#+caption: Excerpt from StackOverflow Developer Survey 2019
+#+name: fig: stackoverflow-survey-wanted
+[[./assets/rusty_python/stackoverflow-2019-wanted.png]]
+
+파이썬은 이제 사람들이 "사용해보고 싶어 하는" 언어 설문조사에서 1위를 차지할 정도로 인지도가 높아졌어요. 한 번 파이썬을 써 보면 그 간결함과 확장성에 빠져들게 되는 것 같아요. 하지만 /힙스터/​의 관점에서 이야기해 보자면... 아쉽지만 "힙한 언어"라고 보기엔 너무 메이저하네요. 스크립트 언어의 왕좌를 차지하면서 힙한 언어라는 타이틀은 내려놓은 모양입니다.
+
+그런데 만약 *힙했던* 언어인 파이썬과 *힙한* 언어인 러스트를 합치면 어떻게 될까요?
+
+* 힙 오버플로우
+
+러스트와 파이썬이라는 두 가지 언어를 어떻게 섞어야 할지 잘 감이 잡히지 않네요. 컴파일 언어와 인터프리트 언어, 정적 타입 언어와 동적 타입 언어, C-like 문법을 가진 언어와 들여쓰기를 기반으로 하는 새로운 언어. 두 언어는 언뜻 보면 물과 기름처럼 섞일 일이 없을 것처럼 보여요. 그래도 길고 짧은 건 대 봐야 아는 법!
+
+커피에 우유를 넣으면 라떼가 되고, 우유에 커피를 넣으면 커피우유가 되듯이, 우리도 두 가지 방법으로 러스트와 파이썬을 섞어 볼 거예요. (라떼랑 커피우유랑 다른 게 뭐냐고 물어보신다면 할 말은 없지만요...) 먼저 파이썬에 러스트를 섞어 보고, 그다음에는 러스트에 파이썬을 섞어 볼게요.
+
+* (Python에) Rust 같은 걸 끼얹나...?
+
+파이썬에 러스트를 섞는다는 것은 결국 파이썬이 메인이라는 뜻이겠네요. 그러면 파이썬, 특히 레퍼런스 구현체인 CPython을 메인으로 두고 여기에 러스트를 섞어 볼게요.
+
+** Python + C
+
+파이썬은 C와 C++를 이용해서 확장 라이브러리를 만들 수 있어요. C나 C++로 파이썬 함수를 작성하는 거죠. JNI(Java Native Interface)와 비슷한 개념이라고 볼 수도 있겠네요. 네이티브 코드로 만든 파이썬 함수는 일반 파이썬 모듈처럼 임포트한 뒤 바로 사용할 수 있습니다. 그런데 여기서 궁금증이 생겨요. 파이썬만 써서 프로그래밍할 수 있는데 어째서 C로 프로그램을 짜야 하는 걸까요?
+
+한 가지 당연한 이유는 *C/C++ 라이브러리를 사용할 때* 필요하기 때문입니다. 물론, ~ctypes~​의 힘을 빌리면 파이썬만 사용해서 C 라이브러리 함수를 호출하는 것도 가능합니다만... ~libc~​의 함수 한두개만 사용한다면 모를까, Qt 같은 덩치 큰 라이브러리를 파이썬에서 사용하고자 할 때는 너무나도 번거롭죠. 만약 C로 파이썬을 확장한다면 Qt같은 덩치 큰 라이브러리도 얼마든지 파이썬으로 끌어와 쓸 수 있습니다. 거기다 타입 변환 걱정 없이 파이썬에 맞게 세세한 부분을 조정할 수도 있으니 훨씬 효율적이죠!
+
+또 다른 이유는 파이썬의 *속도*​입니다. 파이썬은 인터프리터 언어다 보니 CPU에서 바로 실행될 수 있는 C보다 느립니다. 거기다 타입 체크도 필요하나 C보다 몇 배는 느릴 수밖에 없죠. 그 예시로, 데비안의 Computer Language Benchmark Game에서 [[https:benchmarksgame-team.pages.debian.net/benchmarksgame/performance/binarytrees.html][이진 트리를 탐색하는 프로그램]]을 찾아볼게요. 여러 버전의 프로그램이 올라와 있지만, 파이썬과 C 모두 코드가 읽기 쉽고 적당히 병렬 처리를 하는 프로그램으로 가져와 봤어요.
+
+#+begin_src c
+  /* The Computer Language Benchmarks Game
+   ,* https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+   ,*
+   ,* Contributed by Eckehard Berns
+   ,* Based on code by Kevin Carson
+   ,* *reset*
+   ,*/
+
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <pthread.h>
+
+  typedef struct node {
+      struct node *left, *right;
+  } node;
+
+  static node *
+  new_node(node *left, node *right)
+  {
+      node *ret;
+
+      ret = malloc(sizeof(node));
+      ret->left = left;
+      ret->right = right;
+
+      return ret;
+  }
+
+  static long
+  item_check(node *tree)
+  {
+      if (tree->left == NULL)
+          return 1;
+      else
+          return 1 + item_check(tree->left) +
+              item_check(tree->right);
+  }
+
+  static node *
+  bottom_up_tree(int depth)
+  {
+      if (depth > 0)
+          return new_node(bottom_up_tree(depth - 1),
+                          bottom_up_tree(depth - 1));
+      else
+          return new_node(NULL, NULL);
+  }
+
+  static void
+  delete_tree(node *tree)
+  {
+      if (tree->left != NULL) {
+          delete_tree(tree->left);
+          delete_tree(tree->right);
+      }
+      free(tree);
+  }
+
+  struct worker_args {
+      long iter, check;
+      int depth;
+      pthread_t id;
+      struct worker_args *next;
+  };
+
+  static void *
+  check_tree_of_depth(void *_args)
+  {
+      struct worker_args *args = _args;
+      long i, iter, check, depth;
+      node *tmp;
+
+      iter = args->iter;
+      depth = args->depth;
+
+      check = 0;
+      for (i = 1; i <= iter; i++) {
+          tmp = bottom_up_tree(depth);
+          check += item_check(tmp);
+          delete_tree(tmp);
+      }
+
+      args->check = check;
+      return NULL;
+  }
+
+  int
+  main(int ac, char **av)
+  {
+      node *stretch, *longlived;
+      struct worker_args *args, *targs, *hargs;
+      int n, depth, mindepth, maxdepth, stretchdepth;
+
+      n = ac > 1 ? atoi(av[1]) : 10;
+      if (n < 1) {
+          fprintf(stderr, "Wrong argument.\n");
+          exit(1);
+      }
+
+      mindepth = 4;
+      maxdepth = mindepth + 2 > n ? mindepth + 2 : n;
+      stretchdepth = maxdepth + 1;
+
+      stretch = bottom_up_tree(stretchdepth);
+      printf("stretch tree of depth %u\t check: %li\n", stretchdepth,
+             item_check(stretch));
+      delete_tree(stretch);
+
+      longlived = bottom_up_tree(maxdepth);
+
+      hargs = NULL;
+      targs = NULL;
+      for (depth = mindepth; depth <= maxdepth; depth += 2) {
+
+          args = malloc(sizeof(struct worker_args));
+          args->iter = 1 << (maxdepth - depth + mindepth);
+          args->depth = depth;
+          args->next = NULL;
+          if (targs == NULL) {
+              hargs = args;
+              targs = args;
+          } else {
+              targs->next = args;
+              targs = args;
+          }
+          pthread_create(&args->id, NULL, check_tree_of_depth, args);
+      }
+
+      while (hargs != NULL) {
+          args = hargs;
+          pthread_join(args->id, NULL);
+          printf("%ld\t trees of depth %d\t check: %ld\n",
+                 args->iter, args->depth, args->check);
+          hargs = args->next;
+          free(args);
+      }
+
+      printf("long lived tree of depth %d\t check: %ld\n", maxdepth,
+             item_check(longlived));
+
+      /* not in original C version: */
+      delete_tree(longlived);
+
+      return 0;
+  }
+#+end_src
+
+먼저 C 프로그램입니다. 해당 프로그램은 깊이 21의 이진 트리를 모두 탐색하는데 18.32초가 걸렸어요. 현재 가장 빠른 C 프로그램이 깊이 21의 이진 트리를 탐색하는 데 3.59초가 걸렸다는 점을 생각하면 이 구현체도 가장 빠른 구현체라고 볼 수는 없겠네요.
+
+#+begin_src python
+  # The Computer Language Benchmarks Game
+  # https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+  #
+  # contributed by Antoine Pitrou
+  # modified by Dominique Wahli and Daniel Nanz
+  # modified by Joerg Baumann
+
+  import sys
+  import multiprocessing as mp
+
+
+  def make_tree(d):
+      if d > 0:
+          d -= 1
+          return (make_tree(d), make_tree(d))
+      return (None, None)
+
+
+  def check_tree(node):
+      (l, r) = node
+      if l is None:
+          return 1
+      else:
+          return 1 + check_tree(l) + check_tree(r)
+
+
+  def make_check(itde, make=make_tree, check=check_tree):
+      i, d = itde
+      return check(make(d))
+
+
+  def get_argchunks(i, d, chunksize=5000):
+      assert chunksize % 2 == 0
+      chunk = []
+      for k in range(1, i + 1):
+          chunk.extend([(k, d)])
+          if len(chunk) == chunksize:
+              yield chunk
+              chunk = []
+      if len(chunk) > 0:
+          yield chunk
+
+
+  def main(n, min_depth=4):
+      max_depth = max(min_depth + 2, n)
+      stretch_depth = max_depth + 1
+      if mp.cpu_count() > 1:
+          pool = mp.Pool()
+          chunkmap = pool.map
+      else:
+          chunkmap = map
+
+      print('stretch tree of depth {0}\t check: {1}'.format(
+          stretch_depth, make_check((0, stretch_depth))))
+
+      long_lived_tree = make_tree(max_depth)
+
+      mmd = max_depth + min_depth
+      for d in range(min_depth, stretch_depth, 2):
+          i = 2 ** (mmd - d)
+          cs = 0
+          for argchunk in get_argchunks(i, d):
+              cs += sum(chunkmap(make_check, argchunk))
+              print('{0}\t trees of depth {1}\t check: {2}'.format(i, d, cs))
+
+      print('long lived tree of depth {0}\t check: {1}'.format(
+          max_depth, check_tree(long_lived_tree)))
+
+
+  if __name__ == '__main__':
+      main(int(sys.argv[1]))
+#+end_src
+
+다음은 파이썬 프로그램이에요. 위에서 나왔던 C 프로그램보다는 코드의 길이가 짧다는 것이 눈에 띄어요. 그런데 줄어든 코드의 길이 값은 못 하는 것 같네요. 아까와 같이 깊이 21의 이진 트리를 모두 탐색하는 데 80.82초가 걸렸습니다. 메모리 공간도 약 100,000바이트가량 더 썼네요.
+
+파이썬은 인터프리터의 설계상 많은 계산이 필요한 작업에 적합한 프로그래밍 언어는 아닙니다. 하지만 데이터 분석과 같은 작업을 할 때에는 파이썬처럼 간단한 언어가 필수적이에요. 결국 사람들은 계산만 C 확장 프로그램에 맡기고, 알고리즘을 작성하는 작업은 파이썬으로 진행하는 방식을 택하게 됩니다. NumPy, TensorFlow와 같은 유명한 라이브러리도 이 방식을 사용하고 있어요. (실제로 NumPy 리포지토리에 들어가 보시면 거의 반 정도는 C 코드로 이루어져 있어요.)
+
+** GC를 사다 놓았는데 왜 먹지를 못 하니
+
+이렇게 보니 C로 파이썬 확장 라이브러리를 만드는 건 엄청 좋은 것으로 보입니다. 로직은 파이썬으로 구현하고, 느린 계산은 C로 빠릿빠릿하게 실행할 수 있다니, 양 쪽 진영의 좋은 점만 가져온 것처럼 보이잖아요? 하지만 여기서 간과해서는 안 될 사실이 있습니다. 파이썬은 메모리 관리를 자동으로 해 주지만, C는 그렇지 않다는 거죠. 메모리 관리를 하지 않는 언어로 메모리 관리를 하는 언어의 확장 프로그램을 어떻게 만든다는 건가요?
+
+#+begin_note
+파이썬용 네이티브 확장 라이브러리를 설계하는 용도로 고안된 언어가 아예 없는 건 아닙니다. 그 중 많이 사용되는 것 하나는 [[https:cython.org/][Cython]]이라는 언어인데요, 파이썬의 문법에 C와 비슷한 문법을 집어넣고 확장하여 정적 타입 체크와 네이티브 코드로 컴파일하는 기능을 제공하는 언어예요. 재밌어 보이는 건 맞습니다만, 이 글에서는 다루지 않아요.
+#+end_note
+
+C로 파이썬 확장 프로그램을 만들 때는 일반 C 프로그램처럼 ~malloc()~​과 ~free()~ 함수를 통해서 메모리를 적절히 할당하고 해제해 주어야 합니다. 물론, 이는 확장 라이브러리 안에서만 사용하는 구조체에 한정되는 것으로, 만약 이후 파이썬 코드에서 사용할 객체를 쓸 때는 마음대로 메모리를 할당하거나 해제해서는 안 되겠죠? 자칫 잘못했다간 파이썬 인터프리터가 segmentation fault를 뿜으며 장렬히 전사할 테니까요. 그래서 우리는 파이썬 인터프리터에게 "우리 이 객체를 쓰고 있으니까 마음대로 지우면 안 돼!" 하고 이야기해 줄 필요가 있습니다.
+
+모든 파이썬 객체에는 "레퍼런스 카운터"라는 이름의 변수가 하나씩 들어 있는데요, 이 변수에는 어떤 객체를 사용하고 있는 작업(또는 객체)의 개수를 저장하게 됩니다. 방금 "파이썬 인터프리터에게 알려 준다"고 하는 것은 사용하려는 레퍼런스 카운터의 값을 1 증가시키고, 사용이 끝난 뒤 레퍼런스 카운터를 1 감소시키는 것과 같죠. 이 작업을 하면 파이썬 인터프리터가 어떤 객체를 정리해도 되는지 쉽게 알 수 있어요. 레퍼런스 카운트가 0, 즉 이 객체를 사용하는 작업이 하나도 없다면 이제 더 쓰지 않는 객체라는 뜻이니까요.
+
+이 작업을 레퍼런스 카운팅이라고 부르고, 파이썬 내부 소스코드에서는 ~Py_INCREF~​와 ~Py_DECREF~ 매크로가 이 작업을 담당하고 있습니다. 그런데 이건 어디까지나 파이썬 C 구현체와 관련된 이야기예요. 일반적으로 파이썬을 사용할 때에는 별로 만날 일이 없는 이야기죠. 그런데도 레퍼런스 카운팅과 메모리 안정성을 고려하며 파이썬 라이브러리를 만들고 있자니 갑자기 자괴감이 듭니다.
+
+#+begin_quote
+이럴 거면 왜 파이썬으로 만들어? 차라리 전부 C로 만들고 말지.
+#+end_quote
+
+네... 맞는 말이에요. 이렇게 고민할 거면 차라리 C로 만드는 게 더 빠를 텐데요. 이게 정말 최선인가요?
+
+** 귀찮은 일은 러스트에게 맡겨 주시라구요♪
+
+C로 파이썬 확장 라이브러리를 만들 때 발생하는 문제는 세 가지로 정리할 수 있을 것 같네요.
+
+- C 자체의 메모리 안전성
+- C에서 만든 객체를 파이썬에서 사용할 때의 메모리 할당과 해제
+- 파이썬에서 만든 객체를 C에서 사용할 때의 레퍼런스 카운팅
+
+C언어가 가지고 있는 고질병인 메모리 안전성도 고려하기 바쁜데, 레퍼런스 카운팅과 파이썬 메모리 할당과 해제까지 고려하자니 문제가 상당히 복잡해져요. 하지만, 이러한 문제는 러스트의 주요 기능 중 하나인 *차용 검사*​(borrow checking)로 해결할 수 있습니다. 차용 검사는 러스트의 "메모리 안정성"을 보장하는 데 필요불가결한 역할을 맡습니다. 음, 메모리의 차용에 대한 이야기를 하기 전에 메모리의 소유권에 대해 잠깐 짚고 넘어가 볼까요?
+
+*** 내 것은 내 것, 네 것도 내 것
+
+메모리 또는 리소스의 *소유권*​(ownership)은 C에서 C++가 파생될 때 나온 개념이에요. 어떤 객체가 있을 때, 그 객체를 "소유하고 있는" 변수는 어떤 것인가 하는 이야기죠. 먼저 C 코드 하나를 볼까요?
+
+#+begin_src c
+  #include <stdlib.h>
+
+  static const char *const person_name = "John Smith";
+
+  struct person {
+      char *name;
+      int age;
+  };
+
+  int main(int argc, char *argv[])
+  {
+      struct person *p1 = (Person *)malloc(sizeof(struct person));
+      p1->name = person_name;
+      p1->age = 25;
+      
+      // Have fun with the persion
+      
+      struct person *p2 = p1; // ???
+      
+      free(p1);
+      return 0;
+  }
+#+end_src
+
+이 코드는 상당히 간단합니다. 사람 구조체가 들어갈 수 있을 만큼의 메모리 공간을 할당하고 ~p1~​이라는 이름의 포인터 변수에다가 그 주소를 저장하는 코드니까요. 그 뿐만이 아니라 할당한 메모리 공간에 데이터를 집어넣고, 나중에 가서는 ~p2~​라는 포인터 변수에 ~p1~​의 값을 집어넣네요. 그렇다면 22번 줄에서 ~free~ 함수를 호출하는 시점에서 "John Smith" 씨의 ~person~ 구조체는 ~p1~​과 ~p2~ 중 누가 소유하고 있는 걸까요?
+
+정답은 둘 다입니다. ~p1~​과 ~p2~ 모두 같은 메모리 공간을 가리키고 있으니 둘 다 그 메모리를 소유하고 있다고 보는 게 맞겠죠. 이미 이 코드에서 구린내가 풍긴다는 점을 눈치채신 분들도 있을지 모르겠네요. 분명 ~p1~​과 ~p2~ 모두 메모리를 "소유"하고 있었습니다. 하지만 20번 줄에서 ~p1~​에 대해 ~free~ 함수를 호출하면서 ~p2~​는 자기도 모르는 사이에 자신이 소유하던 메모리 공간이 뿅! 사라지는 현상이 일어나게 되죠. 지금은 ~p1~​과 ~p2~​가 서로 붙어 있으니 알아채기 쉽지만, 코드가 길어지게 되면 자연히 이런 "소유권 분쟁" 사태를 알아보기 힘들어지고, 이 분쟁을 제대로 해결하지 못하면 머지않아 segmentation fault가 우리를 반겨 줄 거예요. 그러면 C++에서는 이를 어떻게 해결할까요?
+
+#+begin_src c++
+  #include <memory>
+  #include <string>
+
+  class Person {
+  public:
+      Person(const std::string& name, int age)
+          : name(name)
+          , age(age) { }
+      ~Person() = default;
+      
+  private:
+      const std::string name;
+      const int age;
+  };
+
+  int main(int argc, char* argv[])
+  {
+      std::unique_ptr<Person> up1 = make_unique("John Smith", 25);
+      
+      // The code below doesn't work
+      //auto up2 = up1;
+      // But this one does work
+      auto up2 = std::move(up2);
+      
+      std::shared_ptr<Person> sp1 = make_shared("Jane Smith", 25);
+      auto sp2 = sp1;
+      
+      return 0;
+  }
+#+end_src
+
+C++에서는 말 그대로 *포인터를 똑똑하게 만들어서* 이 문제를 해결합니다. C++11에서 추가된 스마트 포인터를 사용하면 소유권을 명백히 표시할 수 있죠. 또, 생성자와 소멸자 문법을 활용하여 스코프가 사라지만 자동으로 리소스를 정리해 주는 기능도 가지고 있습니다. ~std::unique_ptr~ 클래스는 소유권을 단 하나만 가질 수 있는 스마트 포인터로, 예전처럼 포인터의 내용물을 그냥 다른 곳으로 복사하려고 하면 컴파일러 에러를 내뿜습니다. 그래서 ~std::move~​를 사용해서 다른 변수에게 소유권을 양도해 줘야만 해요. (그래서 21번 줄의 주석 처리된 코드는 컴파일되지 않습니다.)
+
+반면 ~std::shared_ptr~ 클래스는 여러 명이 공동으로 소유할 수 있는 스마트 포인터로, 현재 어떤 리소스를 소유하고 있는 포인터 수를 저장하고 있다가 아무도 소유하지 않게 되면 자동으로 리소스를 정리해 줍니다. 말하자면 아까 설명했던 *레퍼런스 카운팅*​이라는 기술을 십분 활용하여 메모리를 자동으로 관리해 준다고 볼 수 있어요. 새로운 포인터 클래스 뿐만 아니라 C++에서는 *레퍼런스*​라는 추상적인 타입을 만들어서 "소유권"에 더 명확한 의미를 부여했다고 평가할 수 있겠습니다. 그러나, 아무리 C++에서 이렇게 안전한 포인터 타입을 만들었다고 하지만, C++는 완벽하게 메모리 안정성을 보장하는 언어는 아닙니다. 다음 코드 예제를 한 번 볼게요.
+
+#+begin_src c++
+  int& fix_me()
+  {
+      int x = 42;
+      return x;
+  }
+
+  int main(int argc, char* argv[])
+  {
+      auto result = fix_me();
+      std::cout << result << std::endl; // ?!?!?!
+      
+      return 0;
+  }
+#+end_src
+
+위 코드는 문법적으로 문제가 없는 아주 간단하고 100% 컴파일 가능한 코드입니다. 하지만 C++를 조금이라도 다뤄보신 사람이라면 이 코드에 무슨 문제가 있는지 보이실 거예요. 함수 ~fix_me~​는 매개변수가 없고 ~int~​형 레퍼런스를 반환합니다. 그리고, 함수 본문 안에 있는 ~int~​형 지역 변수 ~x~​는 3번 줄에서 선언된 뒤, 5번 줄에서 함수 스코프가 종료되며 스택에서 사라집니다. 그런데 4번 줄에서는 ~x~​의 레퍼런스를 반환하네요. (~x~​를 반환하는 게 아니에요!) 이 경우, 9번 줄에서 ~result~​라는 변수의 값은 뭐가 될까요? ~int&~​형 변수 ~result~​가 참조하는 값은 실제로 이미 스택에서 사라진 값입니다. 아무도 소유하지 않은 메모리 지점에 대롱대롱 매달린 참조(dangling reference)가 되는 거죠. 물론 요즘의 똑똑한 컴파일러는 이러한 코드를 제대로 인식해서 경고 또는 오류를 띄워 주지만, 언어 문법적으로 허용되는 흑마법이라는 사실에는 변함이 없습니다. 그러면 마지막으로 러스트는 이러한 문제를 어떻게 해결하는지 볼까요?
+
+#+begin_src rust
+  fn main() {
+      let answer = 42;
+      let answer2 = answer;
+      
+      // This compiles fine
+      println!("The answer to life, universe, and everything is {}.", answer);
+      
+      let name = String::from("John Smith");
+      let name2 = name;
+      
+      // This does not compile
+      println!("My name is {}.", name);
+  }
+#+end_src
+
+러스트 세상에서는 공동명의라는 개념이 존재하지 않습니다. 따라서 위 코드는 컴파일되지 않아요. 이렇게만 이야기하면 무슨 말인지 잘 이해가 되지 않으실 테니 조금 더 자세히 알아볼까요? 첫 번째 경우를 먼저 봅시다. 먼저 ~answer~​라는 이름의 변수가 42라는 값을 소유하고 있어요. 그리고 3번 줄에서 ~answer2~​라는 변수에 ~answer~​의 값을 "대입"하는데요, 42와 같은 스칼라값, 즉 스택에 저장되는 값은 크기가 정해져 있기 때문에 이때에는 42라는 값이 하나 복사된 뒤, ~answer2~ 변수가 복사된 값의 소유권을 가져갑니다. ~answer~ 변수와 ~answer2~ 변수 모두 각자 42라는 값을 하나씩 가지고 있기 때문에, 6번 줄에서도 문제없이 42가 출력돼요. 그다음 13번 줄에서 스코프가 끝날 때 두 변수 모두 사라지게 됩니다.
+
+하지만 두 번째 경우는 조금 다릅니다. 8번 줄에서 선언된 ~name~​이라는 변수가 "John Smith"라는 ~String~ 객체 값을 "소유"하게 됩니다. 여기서 ~String~ 객체는 힙에 할당되는 객체예요. 따라서 ~name~​에 들어가는 실제 값은 "John Smith" 객체의 포인터입니다. 그리고 바로 다음 3번 줄에서 ~name2~​가 ~name~​의 값을 대입받네요. 만약 C였다면 단순히 ~name2~​에 ~name~ 포인터의 값이 복사되어 두 변수 모두가 같은 객체를 소유하게 되겠지만, 러스트의 경우에는 대입 작업을 하면서 "소유권 이전"이 발생해요. 즉, ~name~​이라는 변수는 더 "John Smith" 객체를 소유하지 않습니다. 12번 줄에서 아무것도 소유하지 않는 ~name~ 변수를 출력하려고 하면 컴파일러는 패닉을 일으키고 그냥 뻗어버리죠. 이 모든 소유권 검사가 컴파일 타임에 이루어진다는 것이 특징입니다.
+
+#+begin_quote
+아니 그러면 하나의 값을 참조할 수 있는 변수가 하나 뿐이란 말이야? 못 써먹을 언어네.
+#+end_quote
+
+현실에서도 어떤 물건을 소유한 사람만이 그 물건을 쓸 수 있는 것은 아니잖아요? 제 펜을 친구한테 빌려줄 수도 있고, 친구 지우개를 제가 빌려 가서 쓸 수도 있는 거니까요. 러스트에서도 마찬가지로 어떤 변수가 소유하고 있는 값을 빌려줄 수 있습니다. 바로 여기서 *차용 검사*​가 등장하는 거죠.
+
+*** 친구에게 돈...이 아니라 메모리 빌리는 법
+
+제가 굉장히 재밌는 단편소설을 써서 A4 용지에 적어뒀다고 가정해 볼게요. +실제로 제가 소설을 쓴다는 얘기는 아닙니다...+ 친구들이 이 소설을 무척이나 읽어보고 싶어 해요. 소설을 읽고 싶어 하는 친구들 모두에게 한 번에 소설을 빌려줄 수 있는 방법이 있을까요? 그냥 용지를 가운데에다가 두고 여러 명이 둘러앉아 함께 읽으라고 하는 방법이 있겠네요. 이 친구들은 그냥 소설을 읽고 싶은 것이라 한 번에 여러 명에게 빌려줄 수 있죠. 하지만 어떤 친구는 자신이 국어국문학과인데 맞춤법과 오탈자가 너무 신경 쓰여서 고쳐 줄 테니 소설 용지를 빌려 달라고 합니다. 이 친구한테 용지를 빌려주면 친구가 자기 책상에 가져가서 오탈자를 수정하기 때문에 다른 친구에게 더 보여주거나 빌려줄 수 없어요.
+
+이 뜬금없는 비유가 러스트에 존재하는 두 레퍼런스 타입을 잘 보여주는 예시라고 보시면 됩니다. 러스트에는 두 가지 종류의 레퍼런스 타입이 존재합니다. *불변*​(immutable) 레퍼런스와 *가변*​(mutable) 레퍼런스예요. 불변 레퍼런스는 여기서 소설을 읽고만 싶어 하는 친구입니다. 불변 레퍼런스는 빌린 값의 내용을 변경하지 않기 때문에 몇 번이고 빌려줄 수 있어요. 어차피 소설을 읽기만 하기 때문에 여러 친구들이 함께 돌려 볼 수 있게 빌려주는 것처럼요.
+
+하지만 가변 레퍼런스는 빌린 값을 변경하기 때문에 단 하나만 존재할 수 있습니다. 오탈자를 수정해주는 국문과 친구가 바로 가변 레퍼런스의 예시겠네요. 국문과 친구가 소설을 빌려 가서 수정을 하면 다른 친구들은 그 동안 소설을 읽을 수 없고, 다른 친구들이 소설을 읽는 동안에는 국문과 친구가 소설을 고칠 수 없는 것처럼, 불변 레퍼런스가 이미 하나 이상 존재한다면 가변 레퍼런스를 만드는 것은 불가능하고, 반대로 가변 레퍼런스가 하나 존재한다면 이를 읽는 불변 레퍼런스를 만드는 것 역시 불가능합니다.
+
+자, 여기까지만 들었을 때는 C++의 경우와 똑같은 오류가 발생할 수 있을 것 같아요. 만약 어떤 함수가 "빌린" 레퍼런스 값을 반환한다면 어떻게 될까요? 다음 코드를 보세요. 분명 ~x~​라는 변수는 4번 줄에서 스코프가 종료되면서 사라지게 될 텐데, 이미 우리가 반환한 ~x~​의 레퍼런스는 이후 어떤 ~x~​를 가리키게 되는 거죠?
+
+#+begin_src rust
+  fn fix_me() -> &i32 {
+      let x = 42;
+      &x
+  }
+#+end_src
+
+러스트 컴파일러는 차용 검사를 실시하여 이러한 문제를 미리 알아보고 컴파일을 그만둡니다. 이 상황은 소설을 빌려 간 친구가 제가 집에 간 뒤에도 소설을 읽고 싶다고 조르는 것과 같아요. 이럴 때에는 빌려간 친구에게 아예 소설을 줘 버리거나, 아니면 학교에 계속 소설을 두도록 이야기하는 수밖에 없겠죠? 비슷하게, 위 코드의 문제를 해결하는 방법은 1) ~x~​의 레퍼런스가 아니라 ~x~ 자체를 반환해서 소유권을 함수 바깥으로 이전하거나, 2) x의 *수명*​(lifetime)을 ~'static~​으로 설정해서 함수 스코프가 종료된 뒤에도 계속 남아있게 만드는 것입니다. (두 번째 방법은 C++에서 함수 내의 지역 변수를 ~static~ 변수로 선언하는 것과 같은 효과를 가져요.)
+
+러스트는 차용 검사를 이용하여 모든 변수가 언제 사라지고, 그 변수가 소유하거나 빌리고 있는 값의 수명이 언제까지인지, 혹시 다른 변수가 빌리고 있는 값이 먼저 사라지지는 않는지 여부를 모두 컴파일 타임에 확인합니다. 따라서 일반적인 프로그래밍 상황에서 일어날 수 있는 메모리 사용 오류를 미연에 전부 방지할 수 있는 것이죠. 이게 바로 러스트가 *메모리 안정성을 보장*​하는 방식입니다. 거기다 차용 검사 단계에서 모든 변수가 언제 사라지는지 미리 알 수 있으니, 컴파일러에게 변수가 사라질 때 실행할 작업을 미리 일러 두면 파이썬 메모리 관리와 레퍼런스 카운팅 같은 작업도 손쉽게 진행할 수 있죠!
+
+*** 메모리 안정성이고 뭐고 다 좋은데 일단 빠르고 봐야지
+
+이런 식으로 많은 검사를 한다면 혹시 느려지지 않을까? 하고 생각하시는 분들이 있다면 큰 오산입니다! 그러면 한번 퍼포먼스 배틀을 해 보는 걸로 하죠. [[https:en.wikipedia.org/wiki/Sieve_of_Eratosthenes][에라토스테네스의 체]]를 파이썬에서 사용할 수 있도록 파이썬, C, 러스트를 이용해서 모듈을 만들어 보겠습니다. 그런 뒤 10만 개의 숫자를 걸러내어 보도록 할게요. 물론 모든 작업은 제 노트북을 이용하여 WSL 환경 위에서 벤치마킹했습니다. 먼저 파이썬 코드를 볼게요.
+
+#+begin_note
+여기에서 사용한 모든 코드는 [[https:github.com/RangHo/rusty-python][제 GitHub 리포지토리]]에 모두 올라와 있습니다. 직접 테스트해보고 싶으시다면 위 링크에 있는 소스코드를 이용해 주세요!
+#+end_note
+
+#+begin_src python
+  import math
+
+  def sieve(n):
+      numbers = list(range(2, n + 1))
+      
+      for i in range(2, int(math.sqrt(n))):
+          if numbers[i - 2] != 0:
+              for j in range(i * i, n + 1, i):
+                  numbers[j - 2] = 0
+                  
+      return [x for x in numbers if x != 0]
+#+end_src
+
+임포트 구문과 공백을 제외하면 7줄짜리 아주 간단한 코드예요. 언뜻 보기에는 슈도코드로 보일 정도로 간결하다는 점이 눈에 띄네요. +사실 슈도코드 맞아요..._+ 그다음은 C 코드를 봅시다.
+
+#+begin_src c
+  #include <Python.h>
+
+  #include <stdlib.h>
+  #include <math.h>
+
+  static PyObject *sieve(PyObject *self, PyObject *args)
+  {
+      Py_ssize_t n;
+      if (!PyArg_ParseTuple(args, "n", &n))
+          goto error;
+
+      int *sieve = (int *)malloc((n - 1) * sizeof(int));
+      if (!sieve)
+          goto error;
+      for (Py_ssize_t i = 2; i <= n; i++)
+          sieve[i - 2] = i;
+
+      Py_ssize_t limit = (Py_ssize_t)sqrt((double)n);
+      for (Py_ssize_t i = 2; i < limit; i++)
+          if (sieve[i - 2] != 0)
+              for (Py_ssize_t j = i * i; j <= n; j += i)
+                  sieve[j - 2] = 0;
+
+      Py_ssize_t prime_num = 0;
+      for (Py_ssize_t i = 0; i < n - 1; i++)
+          if (sieve[i])
+              prime_num++;
+
+      PyObject *prime_list = PyList_New(prime_num);
+      PyObject *buffer = NULL;
+      for (Py_ssize_t i = 0, j = 0; i < n - 1; i++) {
+          if (!sieve[i])
+              continue;
+
+          buffer = PyLong_FromLong(sieve[i]);
+          if (!buffer) {
+              Py_DECREF(prime_list);
+              prime_list = NULL;
+              goto error;
+          } else {
+              PyList_SetItem(prime_list, j++, buffer);
+          }
+      }
+
+      free(sieve);
+      return prime_list;
+
+   error:
+      PyErr_Occurred();
+      return NULL;
+  }
+
+  static PyMethodDef csieve_methods[] = {
+      {"sieve", sieve, METH_VARARGS, NULL},
+      {NULL, NULL, 0, NULL}
+  };
+
+  static struct PyModuleDef csieve_module = {
+      PyModuleDef_HEAD_INIT,
+      "csieve",
+      NULL,
+      -1,
+      csieve_methods
+  };
+
+  PyMODINIT_FUNC PyInit_csieve(void)
+  {
+      return PyModule_Create(&csieve_module);
+  }
+#+end_src
+
+......확실하게 파이썬보다 길다는 사실은 알 수 있네요. 사실 이 코드의 절반만 실제 에라토스테네스의 체를 구현하고, 나머지는 파이썬 오브젝트를 생성하고, 리스트의 내용을 채우는 부분입니다. 함수를 두 개 선언하는 이유도 하나는 파이썬에서 사용할 함수이고, 다른 하나는 모듈을 정의하는 함수이기 때문이에요.
+
+#+begin_note
+위 코드에서는 의도적으로 에러 처리를 위해 goto 문을 사용하고 있습니다. ~goto~​는 프로그램의 플로우를 읽기 어렵게 만들기 때문에 사용을 지양하는 것이 보통이지만, C에서는 다중 ~for~ 루프에서 빠져나오거나 ~try-catch-finally~​와 같은 오류 처리 구문이 없기 때문에 ~goto~​를 사용하는 경우가 많습니다. 이에 관해서는 [[https:www.kernel.org/doc/html/v4.10/process/coding-style.html][리눅스 커널 코딩 스타일 문서]]의 7번 항목이나 [[https:softwareengineering.stackexchange.com/questions/154974/is-this-a-decent-use-case-for-goto-in-c][이 스택오버플로우 질문]]을 참고하세요.
+#+end_note
+
+자, 그러면 속도 테스트 결과를 발표하기 전에 마지막으로 러스트를 이용한 코드를 한번 볼까요? 러스트로 구현할 때 역시 함수 두 개가 필요해요.
+
+#+begin_src rust
+  use pyo3::Python;
+  use pyo3::prelude::*;
+  use pyo3::types::PyList;
+
+  fn sieve(n: usize) -> Vec<u32> {
+      let mut sieve: Vec<u32> = (2..((n + 1) as u32)).collect();
+      let limit: usize = ((n as f64).sqrt() + 1.0) as usize;
+
+      for i in 2usize..limit {
+          if sieve[i - 2] != 0 {
+              let mut j = i * i;
+              while j < n + 1 {
+                  sieve[j - 2] = 0;
+                  j += i;
+              }
+          }
+      }
+
+      sieve.into_iter().filter(|&x| x != 0).collect()
+  }
+
+  #[pymodule]
+  fn rustsieve(_py: Python, module: &PyModule) -> PyResult<()> {
+
+      #[pyfn(module, "sieve")]
+      fn sieve_py(py: Python, n: u32) -> &PyList {
+          let list = PyList::new(py, &sieve(n as usize));
+          list
+      }
+
+      Ok(())
+  }
+#+end_src
+
+와, C에 비교해서 엄청나게 코드 양이 줄어든 것을 확인할 수 있어요. 물론 파이썬 코드보다 길기는 하지만, 파이썬 런타임에 모듈을 등록하는 루틴이 들어간 것을 제외하면 로직 자체는 매우 간단하네요. 러스트의 반복자(iterator) 기반 for 루프 덕에 알고리즘 자체도 읽기 쉽고 간결하고요. 무엇보다 알고리즘 자체를 구현하는 코드는 파이썬에 전혀 연관이 없는 완벽히 순수한 러스트 코드라는 점이 눈에 띕니다.
+
+#+begin_note
+러스트 코드가 이렇게 간결한 데에는 PyO3라는 러스트 라이브러리의 역할이 사실 무척 크긴 합니다. 파이썬 함수를 선언하고, 리스트를 만들거나 레퍼런스 카운터를 관리해주는 등 자잘한 일들을 도맡아 해 주거든요. 이 때문에 공정한 대결이 아니라고 생각하실 수도 있겠지만, 러스트는 cargo라는 이름의 패키지 관리자와 함께 설치되기 때문에 외부 패키지를 자유롭게 이용할 수 있다는 것도 러스트의 장점이에요. 거기다 PyO3 패키지 역시 러스트의 차용 검사 기능을 십분 활용하고 있기도 하고요.
+#+end_note
+
+자, 그러면 한번 실행해 볼까요? 테스트르 할 때 다음 셸 스크립트를 사용했습니다.
+
+#+begin_src sh
+  #!/bin/sh
+
+  test() {
+      printf "Testing the sieve of Eratosthenes written in %s...\n" "$1"
+      python3 -m timeit -s "from $1sieve import sieve" 'sieve(100000)'
+      echo ""
+  }
+
+  test python
+  test c
+  test rust
+#+end_src
+
+여기서 파이썬의 timeit 모듈은 짧은 코드 조각을 벤치마킹하는 툴로, 파이썬 표준 라이브러리에 포함되어 있어요. 어차피 파이썬에서 코드를 호출하기 위해 만든 것이므로 파이썬 유틸리티를 사용하는 게 좋겠죠? 그리고 아래는 실행 결과입니다.
+
+#+begin_src text
+  Testing the sieve of Eratosthenes written in python...
+  10 loops, best of 5: 21.1 msec per loop
+
+  Testing the sieve of Eratosthenes written in c...
+  500 loops, best of 5: 546 usec per loop
+
+  Testing the sieve of Eratosthenes written in rust...
+  500 loops, best of 5: 534 usec per loop
+#+end_src
+
+실행 결과를 비교해 보았을 때, (이미 모두가 예상했듯이) 파이썬이 가장 많은 시간이 걸렸다는 사실을 알 수 있습니다. 하지만 우리가 알고 싶은 건 C와 러스트의 실행 결과 차이잖아요? C와 러스트 모두 컴파일러가 기본으로 지원하는 릴리즈 모드 최적화를 사용해서 컴파일되었다는 점을 고려해 볼 때, C와 러스트의 성능 차이는 거의 없다고 봐도 좋을 것 같습니다. 오히려 러스트 쪽이 아주 조금이나마 더 빠르기도 하고요! C는 파이썬에서 직접 노출하는 API를 사용했지만, 러스트에서는 PyO3 라이브러리를 한 번 거쳐서 실행되었다는 점도 고려하면 놀라운 결과라는 사실을 알 수 있습니다. 여러분도 언젠가 파이썬 확장 라이브러리를 만들 일이 있다면 꼭 러스트를 이용해서 만들어 보시는 걸 추천해 드려요!
+
+이쯤에서 파이썬에 러스트를 섞어 먹는 건 마무리하도록 할까요? 사실 이야기를 하자면 러스트가 제공하는 강력한 표준 라이브러리를 이용하는 것부터 시작해서 끝이 없지만 그 이야기는 다음으로 미뤄두도록 하고... 커피우유를 마셨으면 라떼도 마셔 봐야 하지 않겠어요? 이번에는 러스트에 파이썬을 섞어 먹어 보도록 하겠습니다. 
+
+* (Rust에) Python 같은 걸 끼얹나...?
+
+반대로 러스트에 파이썬을 섞어 먹는다고 하면 이번에는 러스트가 메인이겠네요. 그러면 러스트를 메인으로 해서 파이썬을 구현해 봅시다(?).
+
+** 그 많던 파이썬 인터프리터는 누가 다 먹었는가
+
+여러분은 보통 [[https://python.org][python.org]]에서 파이썬 인터프리터를 다운받거나 아니면 시스템에 설치된 패키지 매니저를 사용해서 파이썬을 설치하셨을 거예요. 그 파이썬 인터프리터가 바로 파이썬 재단에서 개발하는 레퍼런스 인터프리터인 CPython입니다. 이름에서 알 수 있듯이 C로 작성되어 있어요. 하지만 그 이외에도 많은 파이썬 인터프리터가 있다는 사실, 알고 계셨나요?
+
+| 구현체 이름 | 설명                                                                                                                                                          |
+|-------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CPython     | C언어로 작성된 레퍼런스 파이썬 구현체. 파이썬 재단에서 개발을 관리하므로 최신 버전이 가장 먼저 올라온다.                                                      |
+| Stackless   | CPython을 포크해서 변형한 파이썬 구현체. 마이크로스레딩과 같은 병렬 처리 기능에 중점을 두고 개발되고 있다.                                                    |
+| PyPy        | 파이썬으로 작성된 파이썬 구현체(?!). 정확히 말하면 컴파일이 가능하도록 만들어진 파이썬의 서브셋인 RPython으로 구현돼 있는데, CPython보다 속도가 빠르다(?!?!). |
+| MicroPython | 아두이노와 같은 마이크로프로세서에서 돌아가도록 만들어진 파이썬 구현체. Adafruit에서 포크한 CircuitPython이라는 프로젝트도 존재한다.                          |
+| Jython      | Java로 작성된 파이썬 구현체. 자바로 작성된 만큼 자바 프로그램과 상성이 매우 좋다. 하지만 2.7 단계에서 개발이 사실상 멈춘 상태.                                |
+| IronPython  | C#으로 작성된 파이썬 구현체. Jython의 경우와 같이 .NET 프로그램과 상성이 매우 좋다. 하지만 마찬가지로 2.7 단계에서 개발이 사실상 정지.                        |
+
+아니 이렇게나 많은데 우리가 또 러스트로 파이썬을 개발해야 할 필요가 있는 걸까요? 그 대답을 알아보기 위해 러스트로 파이썬을 구현하는 프로젝트인 [[https://github.com/RustPython/RustPython][RustPython]]의 개발자, [[https://github.com/windelbouwman][Windel Bouwman]]의 이야기를 들어 봅시다.
+
+#+begin_quote
+"One of the reasons is that... I wanted to learn Rust."
+
+"(RustPython 프로젝트를 시작한) 이유 중 하나는... 러스트를 배우고 싶어서죠."
+#+end_quote
+
+아, 네. 새 프로그래밍 언어를 배우기 위해 프로그래밍 언어를 구현한다니 어나더 레벨이긴 하네요... 하지만 실제로 현재 RustPython은 40만 줄이 넘는 소스코드를 가지고 있지만 이 프로젝트의 시작은 굉장히 간단했어요. RustPython의 전신인 [[https://github.com/windelbouwman/rspython][rspython]]의 리포지토리를 한번 보세요. 이 리포지토리에서 계속 발전하여 지금은 최소 파이썬 3.5 버전을 지원하는 파이썬 인터프리터가 되었습니다.
+
+** 다 좋은데... 굳이? 왜? 하필? 어째서???
+
+부만의 이야기는 RustPython 프로젝트를 시작한 계기는 설명해 주지만 RustPython이 다른 파이썬 인터프리터보다 왜 나은지, 아니면 러스트가 어째서 다른 언어보다 파이썬 인터프리터를 구현하기 좋은 언어인지 알려주지는 않습니다. 그러면 그에 관해서 이야기를 해봐야겠네요. 아래 코드를 보세요. 아래의 C 코드는 CPython을 이용하여 파이썬 코드 ~p[key]~​를 구현한 부분입니다. 이 코드에서 변수 ~p~​는 파이썬 ~dict~ 타입이라고 생각해 주세요.
+
+#+begin_src c
+  /* (3) */PyObject *PyDict_GetItem(/* (1) */PyObject *p, /* (2) */PyObject *key);
+#+end_src
+
+위 코드의 특징 세 가지를 적어 보겠습니다.
+
+- ~p~​라는 ~PyObject~​의 레퍼런스(1)에서 ~key~​의 레퍼런스(3)에 따라 오브젝트를 찾은 뒤 그 오브젝트의 레퍼런스(3)를 반환함
+- 만약 ~p~​(1)에 ~key~ 엔트리(2)가 존재하지 않는다면 예외를 던지지 않고 ~NULL~​(3)을 반환함
+- ~p~​(1), ~key~​(2), 그리고 함수의 반환값(3)에 대한 레퍼런스 카운터는 모두 프로그래머가 직접 관리해야 함
+
+자, 그리고 아래는 러스트에서 제공하는 기능 세 가지를 나열한 것입니다.
+
+- 러스트에 존재하는 모든 레퍼런스 타입은 컴파일러가 차용 검사를 진행하며 안정성을 보장함
+- 러스트의 표준 라이브러리는 "실패할 수도 있는 작업"을 나타내는 Result<T, E> 타입을 제공함
+- 이 외에도 레퍼런스 카운팅을 자동으로 수행해 주는 Rc<T> 타입도 제공함
+
+어때요, 어디선가 들어본 적 있는 기능 아닌가요? 이렇게 파이썬 인터프리터 구현체가 관리해야 할 기능의 대부분을 러스트는 언어 단에서, 또는 표준 라이브러리를 통해서 이미 제공하고 있어요. 거기다 아까도 잠시 언급했듯, 러스트는 설치할 때 cargo라는 패키지 매니저와 함께 설치되기 때문에 다른 사람이 만들어 둔 기능을 가져오는 것도 C에 비해 훨씬 자유롭죠! 거기다 요즘 핫한 WebAssembly까지 컴파일러가 기본으로 지원하니, 이게 바로 힙스터의 꿈이 아니면 뭐란 말인가요!
+
+** RustPython 동작 원리를.araboza
+
+그러면 실제로 RustPython은 어떤 식으로 구현되어 있는지 간단하게 살펴봅시다. 파이썬을 포함한 대부분의 인터프리트 언어는 4가지 단계를 거쳐서 실행됩니다. 아래 그림을 보세요.
+
+#+caption: 대부분의 인터프리터가 프로그램을 실행할 때 거치는 네 단계
+#+name: fig:interpreter-steps
+[[file:./assets/rusty_python/interpreter-diagram.png]]
+
+먼저 제일 실행의 제일 첫 번째 단계, 소스코드는 말 그대로 프로그램이 프로그래머가 작성한 텍스트 파일으로 존재하는 단계입니다. 그냥 파일 자체를 읽어들이가만 하는 거죠. 여기서 *낱말 분석*​(lexical analysis) 및 *구문 분석*​(syntax analysis, parsing) 단계를 거쳐 다음 단계인 *추상 구문 트리*​(abstract syntax tree)를 구성합니다.
+
+추상 구문 트리는 프로그램의 구조를 트리 자료구조를 사용하여 표현한 것으로, 어떤 문법 구조를 부모 노드로 하고, 그 구조 안에 포함되는 토큰 등을 자식 노드로 갖는 트리예요. 예를 들어, 5 + 3​이라는 수식을 AST로 표현하면 '+' 부모 노드가 5와 3을 자식 노드로 갖는 트리가 되겠죠? 만약 소스코드에 문제가 있다면 이 단계에서 "Syntax error" 오류가 검출됩니다. AST가 완전히 구성되면 이제 컴퓨터가 프로그램을 실행할 준비가 완료된 거예요. 이제 인터프리터는 AST를 보고 컴파일 작업을 수행합니다.
+
+인터프리트 언어라고 했으면서 컴파일 작업이 왜 나오냐고요? 사실 AST만 읽어서 바로 프로그램을 실행하는 것 역시 가능하지만, 그러면 속도가 잘 나오지 않아요. 또 소스코드를 해석하는 작업 자체가 느린 편에 속하기 때문에, 프로그램을 사용할 때마다 소스코드를 다시 읽어들이는 것도 별로 효율적이지 않고요. 그래서 인터프리터는 바이트코드(bytecode)라는 중간 언어(intermediate language)로 프로그램을 컴파일합니다. 이 바이트코드는 구조화가 잘 돼 있는 프로그램 소스코드보다는 CPU에서 실행되는 어셈블리 언어를 닮았어요. 그 쪽이 인터프리터가 이해하기 편하거든요. 이렇게 자기가 이해하기 편한 모습으로 프로그램을 변환시킨 인터프리터는 마지막으로 /바이트코드/​를 실행하는 거죠.

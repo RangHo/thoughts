@@ -713,7 +713,7 @@ C++에서는 말 그대로 *포인터를 똑똑하게 만들어서* 이 문제�
 
 #+caption: 대부분의 인터프리터가 프로그램을 실행할 때 거치는 네 단계
 #+name: fig:interpreter-steps
-[[file:./assets/rusty_python/interpreter-diagram.png]]
+[[./assets/rusty_python/interpreter-diagram.png]]
 
 먼저 제일 실행의 제일 첫 번째 단계, 소스코드는 말 그대로 프로그램이 프로그래머가 작성한 텍스트 파일으로 존재하는 단계입니다. 그냥 파일 자체를 읽어들이가만 하는 거죠. 여기서 *낱말 분석*​(lexical analysis) 및 *구문 분석*​(syntax analysis, parsing) 단계를 거쳐 다음 단계인 *추상 구문 트리*​(abstract syntax tree)를 구성합니다.
 

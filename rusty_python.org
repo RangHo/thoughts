@@ -34,7 +34,7 @@ C++, Java와 같은 초-메이저 언어부터, 들어는 봤지만 써 본 적�
 * 떠오르는 샛별, Rust
 #+caption: Rust의 귀여운 마스코트, Ferris the Crab
 #+name: fig:ferris-the-crab
-[[./assets/rusty_python/ferris-the-crab.png]]
+[[./assets/ferris-the-crab.png]]
 
 러스트는 Mozilla 재단의 Graydon Hoare가 설계한 시스템 프로그래밍 언어입니다.
 초기에는 Mozilla의 실험적인 웹 렌더링 엔진인 [[https:github.com/servo/servo][Servo]]를 개발하기 위해 만들어졌어요.
@@ -54,7 +54,7 @@ Servo의 목적은 보안이 뛰어나고, 병렬  렌더링을 지원하는 크
 
 #+caption: Python을 설계한 Guido van Rossum, by Daniel Stroud
 #+name: fig:guido-van-rossum
-[[./assets/rusty_python/guido-van-rossum.webp]]
+[[./assets/guido-van-rossum.webp]]
 
 파이썬은 네덜란드의 개발자 Guido van Rossum(귀도 반 로섬)이 개발한 프로그래밍 언어입니다.
 그가 네덜란드의 컴퓨터과학 연구 센터[Centrum Wiskunde & Informatic]에서 일할 때, 사이드 프로젝트로 틈틈이 개발한 언어예요.
@@ -77,13 +77,13 @@ Servo의 목적은 보안이 뛰어나고, 병렬  렌더링을 지원하는 크
 * 힙한 언어 + 힙했던 언어 = ???
 #+caption: "자, 재밌는 상상을 한 번 해 보자고."
 #+name: fig:fun-imagination
-[[./assets/rusty_python/fun-imagination.webp]]
+[[./assets/fun-imagination.webp]]
 
 그런 의미에서, 재밌는 상상 운운하시는 분을 다시 한번 모셔 와 보겠습니다.
 
 #+caption: Excerpt from StackOverflow Developer Survey 2019
 #+name: fig: stackoverflow-survey-loved
-[[./assets/rusty_python/stackoverflow-2019-loved.png]]
+[[./assets/stackoverflow-2019-loved.png]]
 
 러스트는 최근 들어 사용자가 급증한, 소위 말하는 "힙한 언어"입니다.
 위에서 볼 수 있듯이 러스트는 스택 오버플로우 사용자가 뽑은 가장 "사랑받는" 언어 설문조사에서 당당하게 1위를 차지했어요.
@@ -92,7 +92,7 @@ Servo의 목적은 보안이 뛰어나고, 병렬  렌더링을 지원하는 크
 
 #+caption: Excerpt from StackOverflow Developer Survey 2019
 #+name: fig: stackoverflow-survey-wanted
-[[./assets/rusty_python/stackoverflow-2019-wanted.png]]
+[[./assets/stackoverflow-2019-wanted.png]]
 
 파이썬은 이제 사람들이 "사용해보고 싶어 하는" 언어 설문조사에서 1위를 차지할 정도로 인지도가 높아졌어요.
 한 번 파이썬을 써 보면 그 간결함과 확장성에 빠져들게 되는 것 같아요.
@@ -913,7 +913,7 @@ RustPython의 전신인 [[https://github.com/windelbouwman/rspython][rspython]]�
 
 #+caption: 대부분의 인터프리터가 프로그램을 실행할 때 거치는 네 단계
 #+name: fig:interpreter-steps
-[[./assets/rusty_python/interpreter-diagram.png]]
+[[./assets/interpreter-diagram.png]]
 
 먼저 제일 실행의 제일 첫 번째 단계, 소스코드는 말 그대로 프로그램이 프로그래머가 작성한 텍스트 파일으로 존재하는 단계입니다.
 그냥 파일 자체를 읽어들이가만 하는 거죠.
@@ -1150,7 +1150,7 @@ RustPython이 진행하지 않는 최적화 중 속도에 큰 도움이 될 수 
 
 #+caption: 가상머신이 하는 일 
 #+name: fig:vm-cycle
-[[./assets/rusty_python/vm-cycle.webp]]
+[[./assets/vm-cycle.webp]]
 
 오히려, RustPython 가상머신에서 눈여겨볼 부분은 빌트인 함수를 구현한 방식이에요.
 러스트에서는 AST 레벨에서 코드를 바꿀 수 있는 강력한 메타프로그래밍 매크로 기능을 제공하는데, 이러한 매크로를 십분 활용해서 간결하게 빌트인 클래스와 함수 등을 구현하고 있어요.

@@ -332,15 +332,46 @@ x'   &= E_x \times 2^{23} + M_x
 
 그런 의미에서 저는 \( [0, 1) \) 구간에서 \( y = \log_2(1 + t)\)​를 일차함수 \( y = t \)​로 무지성 근사해 버리겠습니다. 왜냐하면 이 구간에서는 두 함수의 모양이 비슷하기 때문입니다!!! (\( \sin(x) \)​마저도 \( x \)​로 근사해 버리는 공학의 세계에서 이 정도는 아무것도 아닙니다...)
 
-[[./assets/kono_subarashii_kuromajutsu_ni_shukufuku_o_part_2/graph1.webp]]
+#+begin_src gnuplot :exports results :file assets/graph-linear-log2.svg
+  set terminal svg background rgb 'white'
+  set key inside right bottom
 
-# #+svelte: <Graph f={[(x) => x, (x) => Math.log(x + 1)]} x={[0, 1]} y={[0, 1]} step={0.01} />
+  set border linewidth 2
+  set style line 1 linewidth 2 linecolor rgb '#1f77b4'
+  set style line 2 linewidth 2 linecolor rgb '#ff7f0e'
+
+  set xrange [-0.1:1.1]
+  set yrange [-0.1:1.1]
+
+  f(x) = log(x + 1) / log(2)
+  g(x) = x
+
+  plot f(x) linestyle 1 title "y = lb(x + 1)", \
+       g(x) linestyle 2 title "y = x", \
+       "-" with points pointtype 7 pointsize 0.5 linecolor rgb 'black' notitle
+  0 0
+  1 1
+  e
+#+end_src
+
+#+RESULTS:
+[[file:assets/graph-linear-log2.svg]]
 
 생각보다 두 그래프가 상당히 가깝게 있다는 점을 보실 수 있습니다. 하지만 가운데, 0.5 근처에서는 상당히 차이가 벌어지니 조금 보정할 필요는 있어 보입니다. 그러니 일차함수 \( y = t \)​에 보정값 \( \mu \)​를 더해서 계산해 주겠습니다. 적당한 값 \( \mu \)​를 고르면 그래프가 아래처럼 바뀝니다!
 
-[[./assets/kono_subarashii_kuromajutsu_ni_shukufuku_o_part_2/graph2.webp]]
+#+begin_src gnuplot :exports results :file assets/graph-linear-mu-log2.svg
+  g(x) = x + 0.04504656
 
-# #+svelte: <Graph f={[(x) => x + 0.04504656, (x) => Math.log(x + 1)]} x={[0, 1]} y={[0, 1]} step={0.01} />
+  plot f(x) linestyle 1 title "y = lb(x + 1)", \
+       g(x) linestyle 2 title "y = x + mu", \
+       "-" with points pointtype 7 pointsize 0.5 linecolor rgb 'black' notitle
+  0 0
+  1 1
+  e
+#+end_src
+
+#+RESULTS:
+[[file:assets/graph-linear-mu-log2.svg]]
 
 위 편법을 사용해서 식을 더 전개해 주겠습니다!
 
